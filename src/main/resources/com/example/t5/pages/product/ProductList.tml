@@ -1,0 +1,32 @@
+<html t:type="layout" title="t5 Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+<div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+        <li>
+            <t:pagelink page="product/productList">Список продукции</t:pagelink>
+        </li>
+        <li>
+            <t:pagelink page="create/createProduct">Добавить новую продукцию</t:pagelink>
+        </li>
+        <li>
+            <t:pagelink page="create/receiptSource">Списать продукцию</t:pagelink>
+        </li>
+        <li>
+            <t:pagelink page="product/productList">Шаблоны продукции</t:pagelink>
+        </li>
+    </ul>
+</div>
+
+<table t:type="grid" source="productList" t:row="product" t:rowsPerPage="2" t:pagerPosition="top" t:add="firstName">[Grid here]
+    <p:firstNameCell>
+        <a t:type="pagelink" t:page="create/createProduct" t:context="product.id" href="#">Изменить</a>
+    </p:firstNameCell>
+</table>
+<table t:type="grid" t:source="productList" t:row="product"  t:add="action"
+       t:rowsPerPage="4" t:pagerPosition="top">[Grid here]
+    <p:actionCell>
+        <a t:type="pagelink" t:page="create/createProduct" t:context="product.id" href="#">Изменить</a>
+    </p:actionCell>
+</table>
+</html>

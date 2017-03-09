@@ -5,6 +5,10 @@
     <!-- Most of the page content, including <head>, <body>, etc. tags, comes from Layout.tml -->
 
     <!-- Main hero unit for a primary marketing message or call to action -->
+    <H3>Сырье на складе</H3>
+    <t:grid source="listStorage"/>
+
+
     <div class="hero-unit">
         <p>
             <img src="${asset:context:images/tapestry.png}"
@@ -40,7 +44,7 @@
     <t:block t:id="block">
         <h2>Ajax updated</h2>
         <p>I'v been updated through AJAX call</p>
-        <p>The current time is: <strong>${currentTime}</strong></p>
+        <p>The current time is: <strong>${getCurrentTime()}</strong></p>
     </t:block>
 
 </html>
