@@ -1,6 +1,9 @@
 package com.example.t5.pages;
 
 
+import com.example.t5.data.Units;
+import com.example.t5.entities.SourceSorageEntity;
+import com.example.t5.entities.view.Storage;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.EventContext;
 import org.apache.tapestry5.SymbolConstants;
@@ -11,9 +14,10 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.services.HttpError;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 
-import java.util.Date;
+import java.util.*;
 
 /**
  * Start page of application t5.
@@ -37,6 +41,31 @@ public class Index
   @Inject
   private Block block;
 
+  @Inject
+  private Session session;
+
+  @Property
+  private Storage storage;
+
+  public List<Storage> getListStorage() {
+    List<SourceSorageEntity> list = session.createCriteria(SourceSorageEntity.class).list();
+    Map<String, Double> map = new HashMap<String, Double>();
+    List<String> nameList = new ArrayList<String>();
+    List<Storage> storageList = new ArrayList<Storage>();
+    for (SourceSorageEntity storageEntity : list){
+    Double count =  map.get(storageEntity.getSource().getName());
+      if(count == null) {
+        map.put(storageEntity.getSource().getName(), storageEntity.getCount());
+        nameList.add(storageEntity.getSource().getName());
+      } else {
+        map.put(storageEntity.getSource().getName(), storageEntity.getCount()+count);
+      }
+    }
+    for (String name : nameList){
+    storageList.add(new Storage(name, "0001",  map.get(name), Units.KG));
+  }
+   return storageList;
+  }
 
   // Handle call with an unwanted context
   Object onActivate(EventContext eventContext)
