@@ -1,0 +1,84 @@
+<html t:type="layout" title="t5 Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd">
+<div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+        <li>
+            <t:pagelink page="product/productList">Список продукции</t:pagelink>
+        </li>
+        <li>
+            <t:pagelink page="create/createProduct">Добавить новую продукцию</t:pagelink>
+        </li>
+        <li>
+            <t:pagelink page="create/receiptSource">Списать продукцию</t:pagelink>
+        </li>
+        <li>
+            <t:pagelink page="product/productList">Шаблоны продукции</t:pagelink>
+        </li>
+    </ul>
+</div>
+
+<div style="width: 75%">
+    <t:zone t:id="zoneChange" id="zoneChange">
+    <form t:type="form" t:id="createProduct">
+        <t:errors/>
+        <table class="grid">
+            <tbody>
+            <tr>
+                <td>Наименование</td>
+                <td><input t:id="name" t:type="TextField" t:value="name"></input></td>
+            </tr>
+            <tr>
+                <td>Покупатель</td>
+                <td><input t:id="buyer" t:type="select" model="buyerModel" t:value="buyerId"/></td>
+            </tr>
+            <tr>
+                <td>Дата изготовления</td>
+                <td><input t:id="dateCreate" t:type="DateField" t:format="prop:dateFormat"
+                           t:value="dateCreate"/></td>
+            </tr>
+            <tr>
+                <td>Дата отгрузки</td>
+                <td><input t:id="dateShipment" t:type="DateField" t:format="prop:dateFormat"
+                           t:value="dateShipment"/></td>
+            </tr>
+            <tr>
+                <td>№ п/п</td>
+                <td>Сырье</td>
+                <td>Количество</td>
+                <td>Еденицы измерения</td>
+                <td>Цена</td>
+            </tr>
+            <tr t:type="Loop" t:source="listTest" t:value="test" t:index="index">
+                <td>${getIndexForRender()}</td>
+                <td><input t:type="select" model="modelGroup" t:value="value" t:context="index" zone="zoneChange"/></td>
+                <td><input t:id="count" t:type="TextField" t:value="countValue"/></td>
+                <td>${getUnitsModel()}</td>
+                <td><input t:id="priceSource" readonly="literal:true" t:type="TextField" t:value="priceSource"/></td>
+
+
+
+
+                <td>
+                    <t:submit t:id="remove" t:context="index" value="-"/>
+                </td>
+            </tr>
+            <!--<tr><td><t:eventlink submit="true" t:id="add" t:event="add">Добавить новое сырье</t:eventlink></td></tr>-->
+            <tr>
+                <td></td>
+                <td><t:submit submit="true" t:id="add" value="+"/></td>
+                <td></td>
+                <td>
+
+                </td>
+            </tr>
+            <!--<tr>-->
+            <!--<td>Поставщик</td>-->
+            <!--<td><input t:id="provider" t:type="select" model="selectModel"  t:value="providerId"/></td>-->
+            <!--</tr>-->
+            </tbody>
+        </table>
+        <input t:type="submit" value="Сохранить"/>
+        <t:submit submit="true" t:id="saveAsTemplate" value="Сохранить как шаблон"/>
+    </form> </t:zone>
+</div>
+</html>

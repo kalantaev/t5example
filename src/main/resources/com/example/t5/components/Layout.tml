@@ -4,7 +4,7 @@
         >
 <head>
     <meta charset="utf-8"/>
-    <title>${title}</title>
+    <title>1B-Бухгалтерия</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
@@ -23,21 +23,20 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <t:pagelink page="index" class="navbar-brand">app</t:pagelink>
+            <t:pagelink page="index" class="navbar-brand">В начало</t:pagelink>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <t:loop source="pageNames" value="pageName">
-                    <t:any element="li" class="prop:classForPageName">
-                        <t:pagelink page="prop:pageName">${pageName}</t:pagelink>
-                    </t:any>
-                </t:loop>
+                <li><t:pagelink page="list/SourceList">Сырье</t:pagelink></li>
+                <li><t:pagelink page="product/productList">Продукция</t:pagelink></li>
+                <li><t:pagelink page="list/provider">Поставщики</t:pagelink></li>
+                <li><t:pagelink page="list/buyer">Покупатели</t:pagelink></li>
             </ul>
-            <span class="navbar-right">
-                <li>
-                    <t:pagelink page="login" class="btn btn-default navbar-btn">Sign in</t:pagelink>
-               	</li>
-            </span>
+            <!--<span class="navbar-right">-->
+                <!--<li>-->
+                    <!--<t:pagelink page="login" class="btn btn-default navbar-btn">Sign in</t:pagelink>-->
+               	<!--</li>-->
+            <!--</span>-->
 
         </div><!--/.nav-collapse -->
     </div>
@@ -58,7 +57,7 @@
     <hr />
 
     <footer>
-        <p>&copy; Your Company 2015</p>
+        <p>&copy; Created by Kalantaev Alexandr 2017</p>
     </footer>
 
 </div> <!-- /container -->
