@@ -10,25 +10,40 @@
         <!-- To set up an application with a database, change the artifactId below to
              tapestry-hibernate, and add a dependency on your JDBC driver. You'll also
              need to add Hibernate configuration files, such as hibernate.cfg.xml. -->
-        <dependency>
-            <groupId>org.apache.tapestry</groupId>
-            <artifactId>tapestry-core</artifactId>
-            <version>${tapestry-release-version}</version>
-        </dependency>
+            <dependency>
+                <groupId>org.apache.tapestry</groupId>
+                <artifactId>tapestry-core</artifactId>
+                <version>${tapestry-release-version}</version>
+            </dependency>
+            <!-- Include the Log4j implementation for the SLF4J logging framework -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j-release-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tapestry</groupId>
+                <artifactId>tapestry-webresources</artifactId>
+                <version>${tapestry-release-version}</version>
+            </dependency>
 
-        <!-- Include the Log4j implementation for the SLF4J logging framework -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j-release-version}</version>
-        </dependency>
+            <dependency>
+                <groupId>org.apache.tapestry</groupId>
+                <artifactId>tapestry-hibernate</artifactId>
+                <version>${tapestry-release-version}</version>
+            </dependency>
 
+            <dependency>
+                <groupId>org.hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>2.3.2</version>
+            </dependency>
 
-        <dependency>
-            <groupId>org.apache.tapestry</groupId>
-            <artifactId>tapestry-webresources</artifactId>
-            <version>${tapestry-release-version}</version>
-        </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>5.1.31</version>
+            </dependency>
 
         <!-- Uncomment this to add support for file uploads: -->
         <!--
@@ -77,6 +92,10 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
     <build>
         <finalName>t5</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>tomcat-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -143,7 +162,7 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
         <tapestry-release-version>5.4.1</tapestry-release-version>
         <servlet-api-release-version>2.5</servlet-api-release-version>
         <testng-release-version>6.8.21</testng-release-version>
-        <slf4j-release-version>1.7.19</slf4j-release-version>
+        <slf4j-release-version>1.7.24</slf4j-release-version>
 
     </properties>
 </project>
