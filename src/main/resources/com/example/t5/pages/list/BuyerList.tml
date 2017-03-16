@@ -1,15 +1,6 @@
 <html t:type="layout" title="t5 Index"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd">
-<div class="navbar-collapse collapse">
-<ul class="nav navbar-nav">
-    <li>
-        <t:pagelink page="list/buyerlist">Список покупателей</t:pagelink>
-    </li>
-    <li>
-        <t:pagelink page="create/buyer">Добавить нового покупателя</t:pagelink>
-    </li>
-</ul>
-</div>
+<t:link.LinkInBuyer/>
 <hr/>
 <H3>Все покупатели</H3>
 <t:grid source="buyerList"/>

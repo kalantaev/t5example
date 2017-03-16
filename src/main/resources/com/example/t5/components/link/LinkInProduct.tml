@@ -1,0 +1,18 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li>
+                <t:pagelink page="product/productList">Отгруженная продукция</t:pagelink>
+            </li>
+            <li>
+                <t:pagelink page="create/createProduct" t:context="${getDefId()}">Добавить новую продукцию</t:pagelink>
+            </li>
+            <li>
+                <t:pagelink page="product/ProductInStorageList">Продукция на складе</t:pagelink>
+            </li>
+            <li>
+                <t:pagelink page="product/TemplateList">Шаблоны продукции</t:pagelink>
+            </li>
+        </ul>
+    </div>
+</t:container>

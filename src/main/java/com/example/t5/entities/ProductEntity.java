@@ -19,6 +19,7 @@ public class ProductEntity {
     private List<SourceInProductEntity> sourceList;
     private BigDecimal price;
     private BuyerEntity buyerEntity;
+    private Boolean template;
 
     public ProductEntity() {
     }
@@ -93,6 +94,13 @@ public class ProductEntity {
     public void setBuyerEntity(BuyerEntity buyerEntity) {
         this.buyerEntity = buyerEntity;
     }
+    @Basic
+    @Column(name = "template")
+    public Boolean getTemplate() {
+        return template;
+    }
 
-
+    public void setTemplate(Boolean template) {
+        this.template = template;
+    }
 }

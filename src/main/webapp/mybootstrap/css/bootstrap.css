@@ -533,10 +533,10 @@ th {
   content: "\e078";
 }
 .glyphicon-chevron-left:before {
-  content: "\e079";
+  content: "назад";
 }
 .glyphicon-chevron-right:before {
-  content: "\e080";
+  content: "вперед";
 }
 .glyphicon-plus-sign:before {
   content: "\e081";
@@ -614,7 +614,7 @@ th {
   content: "\e108";
 }
 .glyphicon-calendar:before {
-  content: "\e109";
+  content: "Выбрать";
 }
 .glyphicon-random:before {
   content: "\e110";

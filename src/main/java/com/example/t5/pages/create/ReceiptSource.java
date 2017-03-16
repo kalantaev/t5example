@@ -106,17 +106,11 @@ public class ReceiptSource extends BasicPanel {
     }
 
     void onPrepareForRender() {
+        List<String> groupSet = session.createQuery("select distinct S.group from SourceEntity S").list();
         List<SourceEntity> sourceList = session.createCriteria(SourceEntity.class).list();
         List<ProviderEntity> providerList = session.createCriteria(ProviderEntity.class).list();
-        Set<String> groupSet = new HashSet<String>();
-        groupSet.add("Все категории");
-        for (SourceEntity source : sourceList) {
-            if (source.getGroup() == null) {
-                groupSet.add("Без категории");
-            } else {
-                groupSet.add(source.getGroup());
-            }
-        }
+       groupSet.add("Все категории");
+       groupSet.add("Без категории");
 
         providerModel = new ProviderIdSelectModel(providerList);
         groupModel = new ArrayList<String>(groupSet);

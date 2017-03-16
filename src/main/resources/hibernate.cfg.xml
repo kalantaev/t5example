@@ -18,6 +18,7 @@
         <mapping class="com.example.t5.entities.SourceSorageEntity"/>
         <mapping class="com.example.t5.entities.BuyerEntity"/>
         <mapping class="com.example.t5.entities.ProductEntity"/>
+        <mapping class="com.example.t5.entities.SourceInProductEntity"/>
         <!-- NOTE that after automapping with IDEA property username and password will delete -->
 
     </session-factory>

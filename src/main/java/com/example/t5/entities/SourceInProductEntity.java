@@ -16,6 +16,7 @@ public class SourceInProductEntity {
     private Double count;
     private BigDecimal price;
     private Units units;
+    private Boolean templates;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,5 +69,13 @@ public class SourceInProductEntity {
         this.units = units;
     }
 
+    @Basic
+    @Column(name="TEMPLATE")
+    public Boolean getTemplates() {
+        return templates;
+    }
 
+    public void setTemplates(Boolean templates) {
+        this.templates = templates;
+    }
 }

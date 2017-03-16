@@ -3,35 +3,28 @@
       xmlns:p="tapestry:parameter">
 <t:link.LinkInProduct/>
 
-<table t:type="grid" t:source="productList" t:row="product" t:include="id, name, deteCreate, dateShipment, price"  t:add="action"
-       t:rowsPerPage="4" t:pagerPosition="top">[Grid here]
+<t:grid t:source="productList" rowsPerPage="10"  include="id, name, deteCreate, price" t:add="buyerEntity"
+        row="product">
     <t:parameter name="idCell">
         <t:pagelink t:page="create/createProduct" t:context="product.id">
             ${getIndx()}
         </t:pagelink>
     </t:parameter>
-    <t:parameter name="nameCell">
-        <t:pagelink t:page="create/createProduct" t:context="product.id">
-            ${product?.name}
-        </t:pagelink>
-    </t:parameter>
     <t:parameter name="deteCreateCell">
         <t:pagelink t:page="create/createProduct" t:context="product.id">
-            ${getDeteCreate()}
+        ${getDeteCreate()}
         </t:pagelink>
     </t:parameter>
-    <t:parameter name="dateShipmentCell">
+    <t:parameter name="buyerEntityCell">
         <t:pagelink t:page="create/createProduct" t:context="product.id">
-            ${getDateShipment()}
+            ${getBuyerName()}
         </t:pagelink>
     </t:parameter>
-    <t:parameter name="dateShipmentCell">
+    <t:parameter name="nameCell">
         <t:pagelink t:page="create/createProduct" t:context="product.id">
-            ${product?.price}
+            ${product.name}
         </t:pagelink>
     </t:parameter>
-    <p:actionCell>
-        <t:actionlink t:id="remove" t:context="product.id">Удалить</t:actionlink>
-    </p:actionCell>
-</table>
+</t:grid>
+
 </html>

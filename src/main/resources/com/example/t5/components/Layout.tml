@@ -27,9 +27,9 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><t:pagelink page="list/SourceList">Сырье</t:pagelink></li>
+                <li><t:pagelink page="list/SourceInStorageList">Сырье</t:pagelink></li>
                 <li><t:pagelink page="product/productList">Продукция</t:pagelink></li>
-                <li><t:pagelink page="list/provider">Поставщики</t:pagelink></li>
+                <li><t:pagelink page="list/ProviderList">Поставщики</t:pagelink></li>
                 <li><t:pagelink page="list/buyer">Покупатели</t:pagelink></li>
             </ul>
             <!--<span class="navbar-right">-->

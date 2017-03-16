@@ -1,15 +1,7 @@
 <html t:type="layout" title="t5 Index"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
         >
-<ul class="nav navbar-nav">
-    <li>
-        <t:pagelink page="list/buyerlist">Список покупателей</t:pagelink>
-    </li>
-    <li>
-        <t:pagelink page="create/buyer">Добавить нового покупателя</t:pagelink>
-    </li>
-</ul>
-<div></div>
+<t:link.LinkInBuyer/>
 <div style="width: 25%">
     <!--<t:beaneditform object="source"/></div>-->
 

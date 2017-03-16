@@ -1,18 +1,5 @@
 <html t:type="layout" title="t5 Index"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd">
-<div class="navbar-collapse collapse">
-    <ul class="nav navbar-nav">
-        <li>
-            <t:pagelink page="create/createSource">Добавить сырье</t:pagelink>
-        </li>
-        <li>
-            <t:pagelink page="create/receiptSource">Приход сырья</t:pagelink>
-        </li>
-    </ul>
-</div>
-
-
+<t:link.LinkInSource/>
 <t:grid source="source"/>
-
-
 </html>

@@ -1,6 +1,7 @@
 <html t:type="layout" title="t5 Index"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
         >
+<t:link.LinkInSource/>
 <div style="width: 25%">
     <!--<t:beaneditform object="source"/></div>-->
     <form t:type="form" t:id="receiptSource">

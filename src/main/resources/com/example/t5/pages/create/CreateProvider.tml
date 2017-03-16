@@ -1,16 +1,7 @@
 <html t:type="layout" title="t5 Index"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
         >
-<div class="navbar-collapse collapse">
-    <ul class="nav navbar-nav">
-        <li>
-            <t:pagelink page="list/providerlist">Список поставщиков</t:pagelink>
-        </li>
-        <li>
-            <t:pagelink page="create/provider">Добавить нового поставщика</t:pagelink>
-        </li>
-    </ul>
-</div>
+<t:link.LinkInProvider/>
 <hr/>
 <div style="width: 25%">
 

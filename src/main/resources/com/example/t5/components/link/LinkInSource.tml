@@ -1,0 +1,18 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li>
+                <t:pagelink page="list/SourceInStorageList">Сырье на складе</t:pagelink>
+            </li>
+            <li>
+                <t:pagelink page="list/SourceList">Список наименований сырья</t:pagelink>
+            </li>
+            <li>
+                <t:pagelink page="create/createSource">Добавить новое сырье</t:pagelink>
+            </li>
+            <li>
+                <t:pagelink page="create/receiptSource">Приход сырья</t:pagelink>
+            </li>
+        </ul>
+    </div>
+</t:container>

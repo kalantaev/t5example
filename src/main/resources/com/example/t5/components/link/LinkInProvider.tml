@@ -1,0 +1,12 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li>
+                <t:pagelink page="list/providerlist">Список поставщиков</t:pagelink>
+            </li>
+            <li>
+                <t:pagelink page="create/provider">Добавить нового поставщика</t:pagelink>
+            </li>
+        </ul>
+    </div>
+</t:container>

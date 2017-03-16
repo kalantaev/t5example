@@ -57,29 +57,15 @@ public class CreateSource {
     @InjectPage
     private SourceList sourceList;
 
-    void onPrepareForRender() {
-        List<SourceEntity> sourceList = session.createCriteria(SourceEntity.class).list();
-        Set<String> model = new HashSet<String>();
-        for (SourceEntity source : sourceList) {
-            model.add(source.getGroup());
-        }
-        modelGroup = new ArrayList<String>(model);
+    public void onActivate(Long id){
+        System.out.println(id);
     }
 
-//
-//    @Property
-//    private Long providerId;
+    void onPrepareForRender() {
+        List group = session.createQuery("select distinct S.group from SourceEntity S").list();
+        modelGroup = new ArrayList<String>(group);
+    }
 
-    //
-//@Property
-//private SelectModel selectModel;
-//
-//    void onPrepareForRender() {
-//        // Get all persons - ask business service to find them (from the database)
-//        List<Provider> providers = .getProviderDAO().getAll();
-//
-//        selectModel = new ProviderIdSelectModel(providers);
-//    }
     @CommitAfter
     Object onSuccessFromCreateSource() {
         SourceEntity source = new SourceEntity();
@@ -89,35 +75,8 @@ public class CreateSource {
         source.setAltunits(alternativUnits);
         source.setRate(rate);
         source.setUnits(units);
-//        source.setProvider(.getProviderDAO().getProviderById(providerId));
-//        .getSourceDAO().save(source);
         session.save(source);
         return sourceList;
     }
-
-
-//    public class ProviderIdSelectModel extends AbstractSelectModel {
-//        private List<Provider> providers;
-//
-//        public ProviderIdSelectModel(List<Provider> providers) {
-//            this.providers = providers;
-//        }
-//
-//        @Override
-//        public List<OptionGroupModel> getOptionGroups() {
-//            return null;
-//        }
-//
-//        @Override
-//        public List<OptionModel> getOptions() {
-//            List<OptionModel> options = new ArrayList<OptionModel>();
-//            for (Provider provider : providers ) {
-//                options.add(new OptionModelImpl(provider.getName(), provider.getId()));
-//            }
-//            return options;
-//        }
-//
-//    }
-
 
 }
