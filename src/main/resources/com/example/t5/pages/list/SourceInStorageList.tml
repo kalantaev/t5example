@@ -1,0 +1,30 @@
+<html t:type="layout" title="t5 Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+      xmlns:p="tapestry:parameter">
+<t:link.LinkInSource/>
+<H3>Сырье на складе</H3>
+
+<t:grid t:source="listStorage" rowsPerPage="20" include="name, code, count, units"  row="storage">
+      <t:parameter name="nameCell">
+            <t:pagelink t:page="create/CreateSource" t:context="storage.id">
+                  ${storage?.name}
+            </t:pagelink>
+      </t:parameter>
+      <t:parameter name="codeCell">
+            <t:pagelink t:page="create/CreateSource" t:context="storage.id">
+                  ${storage?.code}
+            </t:pagelink>
+      </t:parameter>
+      <t:parameter name="countCell">
+            <t:pagelink t:page="create/CreateSource" t:context="storage.id">
+                  ${storage.count}
+            </t:pagelink>
+      </t:parameter>
+      <t:parameter name="unitsCell">
+            <t:pagelink t:page="create/CreateSource" t:context="storage.id">
+                  <t:outputraw value=" ${getUnitsFromSource()}" />
+            </t:pagelink>
+      </t:parameter>
+</t:grid>
+
+</html>
