@@ -9,7 +9,7 @@ for (i = 0; prices.length > i; i++) {
     if (hidens[i].value != 0) {
         prices[i].value = hidens[i].value * count;
     }
-        sum += hidens[i].value * count;
+    sum += prices[i].value*1;
 
 }
 allsum.value = sum;
@@ -26,7 +26,7 @@ function changePrice() {
         if (hidens[i].value != 0) {
             prices[i].value = hidens[i].value * count;
         }
-            sum += hidens[i].value * count;
+        sum += prices[i].value*1;
 
     }
     allsum.value = sum;

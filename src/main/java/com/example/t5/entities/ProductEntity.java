@@ -19,9 +19,27 @@ public class ProductEntity {
     private List<SourceInProductEntity> sourceList;
     private BigDecimal price;
     private BuyerEntity buyerEntity;
+    private String note;
     private Boolean template;
-
+    private Boolean deleted;
+    @Basic
+    @Column(name = "DELETED")
+    public Boolean getDeleted() {
+        return deleted;
+    }
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
     public ProductEntity() {
+    }
+    @Basic
+    @Column(name = "note")
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     @Id

@@ -1,0 +1,26 @@
+<html t:type="layout" title="t5 Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+        >
+
+<div class="hero-unit">
+    <h3>Настройки</h3>
+</div>
+
+<form t:type="form" t:id="actlocation">
+    <table class="grid">
+        <tbody>
+        <tr>
+            <td width="30%">Место для сохранения актов списания</td>
+            <td width="50%"><input t:type="TextField" t:value="dir"></input></td>
+            <td><input t:type="submit" value="Сохранить"/></td>
+        </tr>
+        </tbody>
+    </table>
+
+</form>
+<!--<form t:type="form" t:id="createProduct">-->
+<!--<t:SourceForStorage show="true" entity="${getEntity()}"/>-->
+<!--<br/>-->
+<!--<t:SourceForStorage show="false" entity="${getEntity()}"/>-->
+<!--</form>-->
+</html>

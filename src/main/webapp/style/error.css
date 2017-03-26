@@ -1,0 +1,7 @@
+.error{
+    color: #dd0107;
+    background: #f9f9f9; /* Цвет фона */
+    outline: 1px solid rgb(221, 1, 7); /* Чёрная рамка */
+    /*width: 1140px;	 /!* Размеры *!/*/
+    font-size: 14px;
+}

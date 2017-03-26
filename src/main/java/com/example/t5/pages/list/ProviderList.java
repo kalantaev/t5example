@@ -1,9 +1,11 @@
 package com.example.t5.pages.list;
 
 import com.example.t5.entities.ProviderEntity;
+import com.example.t5.entities.SourceSorageEntity;
 import com.example.t5.pages.BasicPanel;
 import com.example.t5.pages.create.CreateProvider;
 import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Session;
@@ -24,8 +26,20 @@ public class ProviderList extends BasicPanel {
     @Inject
     private Session session;
 
+    @Property
+    private ProviderEntity provider;
+
     public List<ProviderList> getProviderList() {
-        return session.createCriteria(ProviderEntity.class).list();
+        return session.createQuery("from ProviderEntity where deleted != true").list();
+    }
+
+
+    @CommitAfter
+    public Object onActionFromRemove(Long id) {
+        ProviderEntity sse = (ProviderEntity) session.get(ProviderEntity.class, id);
+        sse.setDeleted(true);
+        session.update(sse);
+        return this;
     }
 
 }

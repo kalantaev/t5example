@@ -75,6 +75,7 @@ public class CreateProvider {
         providerEntity.setNameOrganization(nameOrganization);
         providerEntity.setPhone(phone);
         providerEntity.setPhoneMobail(phoneMobail);
+        providerEntity.setDeleted(false);
         session.save(providerEntity);
         return providerList;
     }

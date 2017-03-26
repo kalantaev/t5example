@@ -4,13 +4,15 @@ import com.example.t5.entities.SourceEntity;
 import com.example.t5.entities.SourceSorageEntity;
 import com.example.t5.pages.create.CreateSource;
 import com.example.t5.pages.create.ReceiptSource;
+import com.example.t5.util.Helper;
 import org.apache.tapestry5.annotations.InjectPage;
-
-import java.util.List;
-
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Session;
+
+import java.util.List;
 
 
 /**
@@ -24,24 +26,39 @@ public class SourceList {
     private Session session;
     @InjectPage
     private ReceiptSource receiptSource;
-
-    void onPrepareForRender() {
-        //метод выполняется до отрендеривания страницы
-    }
-
     @Property
-    private SourceSorageEntity storageEntity;
+    private SourceEntity source;
 
-    public List<SourceEntity> getSource() {
-        return session.createCriteria(SourceEntity.class).list();
+    void onActivate(){
+        index = 0;
     }
 
-    public List<SourceSorageEntity> getStorage() {
+    @Persist
+    @Property
+    private int index;
 
+    public int getIndx() {
+        return ++index;
+    }
 
-        List<SourceSorageEntity> list = session.createCriteria(SourceSorageEntity.class).list();
-        System.out.println(list.get(0).getSource().getName());
-        return list;
+    public List<SourceEntity> getSources() {
+        return session.createQuery("from SourceEntity S where " +
+                "deleted != true").list();
+    }
+
+    public String getUnits(){
+        return Helper.UnitsToString(source.getUnits());
+    }
+    public String getAltUnits(){
+        return Helper.UnitsToString(source.getAltunits());
+    }
+
+    @CommitAfter
+    public Object onActionFromRemove(Long id){
+        SourceEntity sse = (SourceEntity) session.get(SourceEntity.class, id);
+        sse.setDeleted(true);
+        session.update(sse);
+        return this;
     }
 
 }

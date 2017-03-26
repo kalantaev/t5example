@@ -1,30 +1,53 @@
 <html t:type="layout" title="t5 Index"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
       xmlns:p="tapestry:parameter">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 <t:link.LinkInSource/>
 <H3>Сырье на складе</H3>
+<t:loop source="groups" value="group">
+<div class="box">
+    <h5>
+        <div class="${getCss()}">${group}</div>
+    </h5>
+        <t:grid t:source="listStorage"  include="name, units, count, altCount, price"  row="storage">
+            <t:parameter name="nameCell">
+                <t:pagelink t:page="list/ReciptSourceList" t:context="storage.id">
+                    ${storage?.name}
+                </t:pagelink>
+            </t:parameter>
+            <t:parameter name="codeCell">
+                <t:pagelink t:page="list/ReciptSourceList" t:context="storage.id">
+                    ${storage?.code}
+                </t:pagelink>
+            </t:parameter>
+            <t:parameter name="countCell">
+                <t:pagelink t:page="list/ReciptSourceList" t:context="storage.id">
+                    ${storage.count}
+                </t:pagelink>
+            </t:parameter>
+            <t:parameter name="countCell">
+                <t:pagelink t:page="list/ReciptSourceList" t:context="storage.id">
+                    ${storage.count}
+                </t:pagelink>
+            </t:parameter>
+            <t:parameter name="altCountCell">
+                <t:pagelink t:page="list/ReciptSourceList" t:context="storage.id">
+                    ${storage.altCount}
+                </t:pagelink>
+            </t:parameter>
+            <t:parameter name="unitsCell">
+                <t:pagelink t:page="list/ReciptSourceList" t:context="storage.id">
+                    <t:outputraw value=" ${getUnitsFromSource()}"/>
+                </t:pagelink>
+            </t:parameter>
+            <t:parameter name="priceCell">
+                <t:pagelink t:page="list/ReciptSourceList" t:context="storage.id">
+                    ${storage?.price}
+                </t:pagelink>
+            </t:parameter>
+        </t:grid>
+</div>
+</t:loop>
 
-<t:grid t:source="listStorage" rowsPerPage="20" include="name, code, count, units"  row="storage">
-      <t:parameter name="nameCell">
-            <t:pagelink t:page="create/CreateSource" t:context="storage.id">
-                  ${storage?.name}
-            </t:pagelink>
-      </t:parameter>
-      <t:parameter name="codeCell">
-            <t:pagelink t:page="create/CreateSource" t:context="storage.id">
-                  ${storage?.code}
-            </t:pagelink>
-      </t:parameter>
-      <t:parameter name="countCell">
-            <t:pagelink t:page="create/CreateSource" t:context="storage.id">
-                  ${storage.count}
-            </t:pagelink>
-      </t:parameter>
-      <t:parameter name="unitsCell">
-            <t:pagelink t:page="create/CreateSource" t:context="storage.id">
-                  <t:outputraw value=" ${getUnitsFromSource()}" />
-            </t:pagelink>
-      </t:parameter>
-</t:grid>
 
 </html>

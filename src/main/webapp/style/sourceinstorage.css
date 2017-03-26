@@ -1,0 +1,36 @@
+/*sourceinstorage*/
+h5 { cursor:pointer;
+
+}
+.table_margin{
+    margin-top: -10px;
+}
+.border {
+    padding: 7px;
+    text-indent: 1.5em;
+    color: #337ab7;
+    font-weight:bold;
+    margin-bottom: -10px;
+    text-align: left;
+    font-size: 14px;
+    width: 1140px;	height: 30px; /* Размеры */
+    /*background: #fc0; /!* Цвет фона *!/*/
+    outline: 1px solid rgba(221, 221, 221, 0.64); /* Чёрная рамка */
+    /*border: 1px solid #fff; /!* Белая рамка *!/*/
+
+}
+
+.border1 {
+    padding: 7px;
+    text-indent: 1.5em;
+    color: #337ab7;
+    font-weight:bold;
+
+    margin-bottom: -10px;
+    /*text-align:  center;*/
+    width: 1140px;	height: 30px; /* Размеры */
+    background: #f9f9f9; /* Цвет фона */
+    outline: 1px solid rgba(221, 221, 221, 0.64); /* Чёрная рамка */
+    /*border: 1px solid #fff; /!* Белая рамка *!/*/
+
+}

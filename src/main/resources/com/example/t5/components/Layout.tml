@@ -32,11 +32,11 @@
                 <li><t:pagelink page="list/ProviderList">Поставщики</t:pagelink></li>
                 <li><t:pagelink page="list/buyer">Покупатели</t:pagelink></li>
             </ul>
-            <!--<span class="navbar-right">-->
-                <!--<li>-->
-                    <!--<t:pagelink page="login" class="btn btn-default navbar-btn">Sign in</t:pagelink>-->
-               	<!--</li>-->
-            <!--</span>-->
+            <span class="navbar-right">
+                <li>
+                    <t:pagelink page="settingpage" class="btn btn-default navbar-btn">Настройка</t:pagelink>
+               	</li>
+            </span>
 
         </div><!--/.nav-collapse -->
     </div>

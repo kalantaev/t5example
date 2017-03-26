@@ -5,14 +5,14 @@ import com.example.t5.entities.ProviderEntity;
 import com.example.t5.entities.SourceEntity;
 import com.example.t5.entities.SourceSorageEntity;
 import com.example.t5.pages.BasicPanel;
+import com.example.t5.pages.list.SourceInStorageList;
 import com.example.t5.pages.list.SourceList;
+import com.example.t5.util.Helper;
 import org.apache.tapestry5.OptionGroupModel;
 import org.apache.tapestry5.OptionModel;
+import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.SelectModel;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
@@ -30,14 +30,15 @@ import java.util.*;
 /**
  * Created by Калантаев Александр on 19.02.2017.
  */
+@Import(stylesheet = "context:style/createform.css")
 public class ReceiptSource extends BasicPanel {
 
     @InjectComponent("receiptSource")
     private Form form;
 
     @InjectPage
-    private SourceList sourceList;
-
+    private SourceInStorageList sourceList;
+    @Persist(PersistenceConstants.FLASH)
     @Property
     private String group;
 
@@ -56,16 +57,21 @@ public class ReceiptSource extends BasicPanel {
     private Long providerId;
 
     @Property
-    private Units units;
+    private String units;
+ @Property
+    private String note;
 
     @Property
     private SelectModel sourceModel;
     @Persist
     @Property
     private SelectModel providerModel;
-
+    @Persist
     @Property
     private List<String> groupModel;
+
+    @Property
+    private List<String> unitses;
 
     @Inject
     private Request request;
@@ -79,52 +85,74 @@ public class ReceiptSource extends BasicPanel {
     @Inject
     private Session session;
 
+
+    @Persist(PersistenceConstants.FLASH)
+    @Property
+    private List<String> errors;
     Object onValueChangedFromGroup(String group) {
-
-        List<SourceEntity> sourceList = session.createCriteria(SourceEntity.class).list();
-        List<SourceEntity> filtratedSourse = new ArrayList<SourceEntity>();
         if ("Все категории".equals(group)) {
-            sourceModel = new SourceIdSelectModel(sourceList);
+            sourceModel = new SourceIdSelectModel(session.createQuery("from SourceEntity where deleted != true").list());
         } else {
-            for (SourceEntity source : sourceList) {
-                if (group.equals(source.getGroup())) {
-                    filtratedSourse.add(source);
-                }
-                if (group.equals("Без категории") && source.getGroup() == null) {
-                    filtratedSourse.add(source);
-                }
-            }
-            sourceModel = new SourceIdSelectModel(filtratedSourse);
+            group = "Без категории".equals(group) ? null : group;
+            sourceModel = new SourceIdSelectModel(session.createQuery("from SourceEntity S where group = :group")
+                    .setParameter("group", group).list());
         }
-
+        unitses = new ArrayList<String>();
         return sourceModelZone.getBody();
-
     }
 
-    public boolean showSource() {
-        return !(group == null);
+    Object onValueChangedFromSourceId(Long sourceId) {
+        if ("Все категории".equals(group)) {
+            sourceModel = new SourceIdSelectModel(session.createQuery("from SourceEntity where deleted != true").list());
+        } else {
+            group = "Без категории".equals(group) ? null : group;
+            sourceModel = new SourceIdSelectModel(session.createQuery("from SourceEntity S where group = :group and deleted != true")
+                    .setParameter("group", group).list());
+        }
+        SourceEntity entity = (SourceEntity) session.get(SourceEntity.class, sourceId);
+        unitses = new ArrayList<String>();
+        unitses.add(Helper.UnitsToString(entity.getUnits()));
+        if (entity.getAltunits() != null) {
+            unitses.add(Helper.UnitsToString(entity.getAltunits()));
+        } else {
+            units = unitses.get(0);
+        }
+        return sourceModelZone.getBody();
     }
 
     void onPrepareForRender() {
-        List<String> groupSet = session.createQuery("select distinct S.group from SourceEntity S").list();
-        List<SourceEntity> sourceList = session.createCriteria(SourceEntity.class).list();
-        List<ProviderEntity> providerList = session.createCriteria(ProviderEntity.class).list();
-       groupSet.add("Все категории");
-       groupSet.add("Без категории");
-
+        List<String> groupSet = session.createQuery("select distinct S.group from SourceEntity S where deleted != true").list();
+        List<SourceEntity> sourceList =new ArrayList<SourceEntity>();
+        List<ProviderEntity> providerList = session.createQuery("from ProviderEntity where deleted != true").list();
+        groupSet.add("Все категории");
         providerModel = new ProviderIdSelectModel(providerList);
         groupModel = new ArrayList<String>(groupSet);
         sourceModel = new SourceIdSelectModel(sourceList);
+        unitses = new ArrayList<String>();
     }
 
     public Format getDateFormat() {
         return DateFormat.getDateInstance(DateFormat.SHORT, currentLocale);
     }
 
+    private boolean validate(){
+        errors = new ArrayList<String>();
+        if(sourceId == null){
+            errors.add("Поле \"Сырье\" должно быть заполнено.");
+        }
+        if(count == null || count == 0) {
+            errors.add("Поле \"Количество\" должно быть заполнено и не равнятся нулю.");
+        }
+        if(price == null || BigDecimal.ZERO.compareTo(price) == 0){
+            errors.add("Поле \"Стоимость\" должно быть заполнено и не равнятся нулю.");
+        }
+        return !errors.isEmpty();
+    }
+
     @CommitAfter
     Object onSuccess() {
+        if(validate()) return this;
         SourceSorageEntity sse = new SourceSorageEntity();
-        sse.setCount(count);
         sse.setPrice(price);
         sse.setDate(receiptDate);
         if (providerId != null) {
@@ -132,9 +160,17 @@ public class ReceiptSource extends BasicPanel {
             sse.setProvider(pe);
         }
         SourceEntity se = (SourceEntity) session.get(SourceEntity.class, sourceId);
+        Units un = Helper.StringToUnits(units);
+        if(un == se.getAltunits()){
+            count = count * se.getRate();
+        }
+        sse.setCount(count);
         sse.setSource(se);
+        sse.setNote(note);
+        sse.setDeleted(false);
+        sse.setResidue(count);
         session.save(sse);
-
+        group=null;
         return sourceList;
     }
 }

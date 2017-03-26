@@ -17,7 +17,15 @@ public class SourceInProductEntity {
     private BigDecimal price;
     private Units units;
     private Boolean templates;
-
+    private Boolean deleted;
+    @Basic
+    @Column(name = "DELETED")
+    public Boolean getDeleted() {
+        return deleted;
+    }
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, insertable = true, updatable = true)

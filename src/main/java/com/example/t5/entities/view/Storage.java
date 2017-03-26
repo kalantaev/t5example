@@ -9,10 +9,30 @@ public class Storage {
     private Long id;
     private String name;
     private String code;
-    private double count;
+    private String count;
+
+    public String getAltCount() {
+        return altCount;
+    }
+
+    public void setAltCount(String altCount) {
+        this.altCount = altCount;
+    }
+
+    private String altCount;
     private Units units;
 
-    public Storage(Long id, String name, String code, double count, Units units) {
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    private String price;
+
+    public Storage(Long id, String name, String code, String count, Units units) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -39,11 +59,11 @@ public class Storage {
         this.code = code;
     }
 
-    public double getCount() {
+    public String getCount() {
         return count;
     }
 
-    public void setCount(double count) {
+    public void setCount(String count) {
         this.count = count;
     }
 

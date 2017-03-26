@@ -1,55 +1,68 @@
 <html t:type="layout" title="t5 Index"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
         >
 <t:link.LinkInSource/>
-<div style="width: 25%">
-    <!--<t:beaneditform object="source"/></div>-->
+<div class="createform">
+    <div class="title">
+        Добавление прихода сырья
+    </div>
+    <hr/>
+    <t:error.Error errors="errors"/>
+<div class="size">
     <form t:type="form" t:id="receiptSource">
-        <t:errors/>
-        <table class="grid">
-            <tbody>
-            <tr>
-                <td>Группа</td>
-                <td style="margin-left: 20px"><input t:id="group" t:type="select" model="groupModel"
-                                                     t:zone="sourceModelZone" t:value="group"/></td>
-            </tr>
-            </tbody>
-        </table>
-        <table class="grid">
-            <tbody>
-            <t:zone t:id="sourceModelZone" id="sourceModelZone" style="display: inline;">
-                <t:if test="${showSource()}">
-                    <tr>
-                        <td>Сыръе</td>
-                        <td><input t:id="sourceId" t:type="select" model="sourceModel" t:value="sourceId"/></td>
-                    </tr>
-                    <tr>
-                        <td>Поставщик</td>
-                        <td><input t:id="providerId" t:type="select" model="providerModel" t:value="providerId"/></td>
-                    </tr>
-                    <tr>
-                        <td>Дата</td>
-                        <td><input t:id="receiptDate" t:type="DateField" t:format="prop:dateFormat"
-                                   t:value="receiptDate"/></td>
-                    </tr>
-                    <tr>
-                        <td>Количество</td>
-                        <td><input t:id="count" t:type="TextField" t:value="count"/></td>
-                    </tr>
-                    <tr>
-                        <td>Еденицы измерения</td>
-                        <td><input t:id="units" t:type="select" t:value="units"/></td>
-                    </tr>
-                    <tr>
-                        <td>Цена</td>
-                        <td><input t:id="price" t:type="TextField" t:value="price"/></td>
-                    </tr>
 
-                </t:if>
-            </t:zone>
-            </tbody>
-        </table>
+
+        <t:zone t:id="sourceModelZone" id="sourceModelZone" style="display: inline;">
+            <table class="grid">
+                <tbody>
+                <tr>
+                    <td>Группа</td>
+                    <td style="width:80%"><input t:id="group" t:type="select" model="groupModel"
+                                                         t:zone="sourceModelZone" t:value="group"/></td>
+                </tr>
+                <tr>
+                    <td>Сыръе</td>
+                    <td><input t:id="sourceId" t:type="select" model="sourceModel" t:zone="sourceModelZone"
+                               t:value="sourceId"/></td>
+                </tr>
+                <tr>
+                    <td>Поставщик</td>
+                    <td><input t:id="providerId" t:type="select" model="providerModel" t:value="providerId"/></td>
+                </tr>
+                <tr>
+                    <td>Дата</td>
+                    <td><input t:id="receiptDate" t:type="DateField" t:format="prop:dateFormat"
+                               t:value="receiptDate"/></td>
+                </tr>
+                <tr>
+                    <td>Количество</td>
+                    <td><input t:id="count" t:type="TextField" t:value="count"/></td>
+                </tr>
+                <tr>
+                    <td>Еденицы измерения</td>
+                    <td><input t:id="units" model="unitses" t:type="select" t:value="units"/></td>
+                    <td><img src="${asset:context:images/qwe.png}" width="26pх"
+                             alt="Первая в списке основная ЕИ, вторая - альтернативная. При указании альтернативной ЕИ количество будет пересчитано и сохранено в основной ЕИ"
+                             title="Первая в списке основная ЕИ, вторая - альтернативная. При указании альтернативной ЕИ количество будет пересчитано и сохранено в основной ЕИ"/></td>
+                </tr>
+                <tr>
+                    <td>Стоимость</td>
+                    <td><input t:id="price" t:type="TextField" t:value="price"/></td>
+                </tr>
+                <tr>
+                    <td>Заметка</td>
+                    <td><input t:id="note" t:type="TextArea" t:value="note"/></td>
+                </tr>
+
+                <!--</t:if>-->
+
+                </tbody>
+            </table><hr/>
+        </t:zone>
+        <div class="button">
         <input t:type="submit" value="Сохранить"/>
+        </div>
     </form>
+    </div>
 </div>
 </html>

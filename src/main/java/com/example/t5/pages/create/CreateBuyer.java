@@ -72,6 +72,7 @@ public class CreateBuyer {
         buyerEntity.setNameOrganization(nameOrganization);
         buyerEntity.setPhone(phone);
         buyerEntity.setPhoneMobail(phoneMobail);
+        buyerEntity.setDeleted(false);
         session.save(buyerEntity);
         return buyerList;
     }

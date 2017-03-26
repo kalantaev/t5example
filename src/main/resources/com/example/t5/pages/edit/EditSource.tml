@@ -1,0 +1,78 @@
+<html t:type="layout" title="t5 Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter"
+        >
+<t:link.LinkInSource/>
+
+
+
+<div class="createform">
+    <div class="title">
+       Редактирование "${name}"
+    </div>
+    <hr/>
+    <t:error.Error errors="errors"/>
+    <div class="size">
+        <div class="check">
+            <t:form>
+                <div style="margin-left: 200px">
+                    <t:checkbox t:id="newGroup" onclick="this.form.submit();"/>
+                    <t:label for="newGroup">Новая группа</t:label>
+
+                </div>
+            </t:form>
+        </div>
+        <div class="insideform">
+            <form t:type="form" t:id="createSource">
+                <table class="grid">
+                    <tbody>
+                    <t:if test="newGroup">
+                        <tr>
+                            <td width="25%">Группа</td>
+                            <td width="55%"><input t:id="group" t:type="TextField" t:value="group"></input></td>
+                        </tr>
+                        <p:else>
+                            <tr>
+                                <td width="25%">Группа</td>
+                                <td width="55%"><input t:id="groups" t:type="select" model="modelGroup"
+                                                       t:value="group"></input>
+                                </td>
+                            </tr>
+                        </p:else>
+                    </t:if>
+                    <tr>
+                        <td>Наименование</td>
+                        <td><input t:id="name" t:type="TextField" t:value="name"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Номенклатурный номер</td>
+                        <td><input t:id="code" t:type="TextField" t:value="code"/></td>
+                    </tr>
+                    <tr>
+                        <td>Единицы измерения</td>
+                        <td><input t:id="units" t:type="select" t:value="units"/></td>
+                    </tr>
+                    <tr>
+                        <td>Альтернативные единицы измерения</td>
+                        <td><input t:id="alternativUnits" t:type="select" t:value="alternativUnits"/></td>
+                    </tr>
+                    <tr>
+                        <td>Коэффициент перевода</td>
+                        <td><input t:id="rate" t:type="TextField" t:value="rate"/></td>
+                        <td><abbr title="Единица измерения">ЕИ</abbr>
+                            = <abbr title="Альтернативная единица измерения">АЕИ</abbr> *
+                            <abbr title="Коэффициент перевода">КП</abbr></td>
+                    </tr>
+                    </tbody>
+                </table><hr/>
+                <div class="button">
+                    <input t:type="submit" value="Обновить"/>
+                    <div class="padding-left">
+                    <t:submit submit="true" t:id="Deleted" t:mixins="Confirm" message="Вы действительно хотите удалить данную номенклатуру?"  value="Удалить"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</html>

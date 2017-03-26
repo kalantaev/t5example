@@ -1,5 +1,50 @@
 <html t:type="layout" title="t5 Index"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd">
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 <t:link.LinkInSource/>
-<t:grid source="source"/>
+<t:grid source="sources" include="id, name, code, group, units, rate, altunits" row="source" add="action">
+      <t:parameter name="idCell">
+            <t:pagelink t:page="edit/EditSource" t:context="source.id">
+                  ${getIndex()}
+            </t:pagelink>
+      </t:parameter>
+      <t:parameter name="nameCell">
+            <t:pagelink t:page="edit/EditSource" t:context="source.id">
+                  ${source?.name}
+            </t:pagelink>
+      </t:parameter>
+      <t:parameter name="codeCell">
+            <t:pagelink t:page="edit/EditSource" t:context="source.id">
+                  ${source?.code}
+            </t:pagelink>
+      </t:parameter>
+      <t:parameter name="groupCell">
+            <t:pagelink t:page="edit/EditSource" t:context="source.id">
+                  ${source?.group}
+            </t:pagelink>
+      </t:parameter>
+      <t:parameter name="unitsCell">
+            <t:pagelink t:page="edit/EditSource" t:context="source.id">
+                  ${getUnits()}
+            </t:pagelink>
+      </t:parameter>
+      <t:parameter name="rateCell">
+            <t:pagelink t:page="edit/EditSource" t:context="source.id">
+                  ${source?.rate}
+            </t:pagelink>
+      </t:parameter>
+      <t:parameter name="altunitsCell">
+            <t:pagelink t:page="edit/EditSource" t:context="source.id">
+                  ${getAltUnits()}
+            </t:pagelink>
+      </t:parameter>
+      <t:parameter name="actionCell">
+            <t:actionlink t:id="remove"
+                          t:mixins="Confirm"
+                          message="Вы действительно хотите удалить данную номенклатуру?"
+                          t:context="source.id">
+                  <img src="${asset:context:images/delete.png}"
+                       alt="Удалить" title="Удалить"/>
+            </t:actionlink>
+      </t:parameter>
+</t:grid>
 </html>

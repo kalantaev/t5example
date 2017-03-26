@@ -21,6 +21,7 @@ public class BuyerEntity {
     private String phoneMobail;
     private String adress;
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
@@ -140,6 +141,15 @@ public class BuyerEntity {
 
     public void setAdress(String adress) {
         this.adress = adress;
+    }
+    private Boolean deleted;
+    @Basic
+    @Column(name = "DELETED")
+    public Boolean getDeleted() {
+        return deleted;
+    }
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override

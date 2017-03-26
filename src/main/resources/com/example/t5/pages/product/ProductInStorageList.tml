@@ -6,22 +6,22 @@
 <t:grid t:source="productList" rowsPerPage="10"  include="id, name, deteCreate, price" t:add="buyerEntity"
         row="product">
     <t:parameter name="idCell">
-        <t:pagelink t:page="create/createProduct" t:context="product.id">
+        <t:pagelink t:page="edit/editProduct" t:context="product.id">
             ${getIndx()}
         </t:pagelink>
     </t:parameter>
     <t:parameter name="deteCreateCell">
-        <t:pagelink t:page="create/createProduct" t:context="product.id">
+        <t:pagelink t:page="edit/editProduct" t:context="product.id">
         ${getDeteCreate()}
         </t:pagelink>
     </t:parameter>
     <t:parameter name="buyerEntityCell">
-        <t:pagelink t:page="create/createProduct" t:context="product.id">
+        <t:pagelink t:page="edit/editProduct" t:context="product.id">
             ${getBuyerName()}
         </t:pagelink>
     </t:parameter>
     <t:parameter name="nameCell">
-        <t:pagelink t:page="create/createProduct" t:context="product.id">
+        <t:pagelink t:page="edit/editProduct" t:context="product.id">
             ${product.name}
         </t:pagelink>
     </t:parameter>

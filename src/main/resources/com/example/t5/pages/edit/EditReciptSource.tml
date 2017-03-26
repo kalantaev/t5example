@@ -1,0 +1,66 @@
+<html t:type="layout" title="t5 Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+        >
+<t:link.LinkInSource/>
+<div class="createform">
+    <div class="title">
+        Редактирование прихода ${sourceId}
+    </div>
+    <hr/>
+    <t:error.Error errors="errors"/>
+    <div class="size">
+        <form t:type="form" t:id="receiptSource">
+            <t:errors/>
+
+            <table class="grid">
+                <tbody>
+                <tr>
+                    <td>Группа</td>
+                    <td style="width:80%"><input t:id="group" t:type="TextField"
+                                                 readonly="true" t:value="group"/></td>
+                </tr>
+                <tr>
+                    <td>Сыръе</td>
+                    <td><input t:id="sourceId" t:type="TextField" readonly="true"
+                               t:value="sourceId"/></td>
+                </tr>
+                <tr>
+                    <td>Поставщик</td>
+                    <td><input t:id="providerId" t:type="select" model="providerModel" t:value="providerId"/></td>
+                </tr>
+                <tr>
+                    <td>Дата</td>
+                    <td><input t:id="receiptDate" t:type="DateField" t:format="prop:dateFormat"
+                               t:value="receiptDate"/></td>
+                </tr>
+                <tr>
+                    <td>Количество</td>
+                    <td><input t:id="count" t:type="TextField" t:value="count"/></td>
+                </tr>
+                <tr>
+                    <td>Еденицы измерения</td>
+                    <td><input t:id="units" model="unitses" t:type="select" t:value="units"/></td>
+                </tr>
+                <tr>
+                    <td>Цена</td>
+                    <td><input t:id="price" t:type="TextField" t:value="price"/></td>
+                </tr>
+                <tr>
+                    <td>Заметка</td>
+                    <td><input t:id="note" t:type="TextArea" t:value="note"/></td>
+                </tr>
+                </tbody>
+            </table>
+            <hr/>
+            <div class="button">
+                <input t:type="submit" value="Обновить"/>
+
+                <div class="padding-left">
+                    <t:submit submit="true" t:id="Deleted" t:mixins="Confirm"
+                              message="Вы действительно хотите удалить приход?" value="Удалить"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</html>

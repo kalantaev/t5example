@@ -2,10 +2,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.example</groupId>
-    <artifactId>t5</artifactId>
+    <artifactId>KTK</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>t5 Tapestry 5 Application</name>
+    <name>KTK</name>
         <dependencies>
         <!-- To set up an application with a database, change the artifactId below to
              tapestry-hibernate, and add a dependency on your JDBC driver. You'll also
@@ -44,7 +44,12 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>5.1.31</version>
             </dependency>
-
+            <!--работа с excel-->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>3.14</version>
+            </dependency>
         <!-- Uncomment this to add support for file uploads: -->
         <!--
          <dependency>

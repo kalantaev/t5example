@@ -1,0 +1,17 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+             xmlns:p="tapestry:parameter">
+    <tr>
+
+        <t:if test="${hasError()}">
+            <ul class="error">
+                <t:loop source="errors" value="value">
+                    <li>
+                        ${value}
+                    </li>
+                </t:loop>
+            </ul>
+        </t:if>
+
+
+    </tr>
+</t:container>

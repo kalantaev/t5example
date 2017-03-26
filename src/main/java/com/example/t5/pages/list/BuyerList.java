@@ -1,8 +1,11 @@
 package com.example.t5.pages.list;
 
 import com.example.t5.entities.BuyerEntity;
+import com.example.t5.entities.ProviderEntity;
 import com.example.t5.pages.create.CreateBuyer;
 import org.apache.tapestry5.annotations.InjectPage;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Session;
 
@@ -22,8 +25,22 @@ public class BuyerList {
     @Inject
     private Session session;
 
-    public List<BuyerList> getBuyerList(){
-        return session.createCriteria(BuyerEntity.class).list();
+
+    @Property
+    private BuyerEntity provider;
+
+    public List<BuyerEntity> getBuyerList() {
+        return session.createQuery("from BuyerEntity where deleted != true").list();
     }
+
+
+    @CommitAfter
+    public Object onActionFromRemove(Long id) {
+        BuyerEntity sse = (BuyerEntity) session.get(BuyerEntity.class, id);
+        sse.setDeleted(true);
+        session.update(sse);
+        return this;
+    }
+
 
 }

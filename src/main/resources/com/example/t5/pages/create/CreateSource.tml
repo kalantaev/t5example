@@ -4,55 +4,81 @@
         >
 <t:link.LinkInSource/>
 
-<div style="width: 25%">
-    <!--<t:beaneditform object="source"/></div>-->
 
-    <t:form>
-        <t:checkbox t:id="newGroup" onclick="this.form.submit();"/> <t:label for="newGroup">Новая група</t:label>
-    </t:form>
-    <form t:type="form"  t:id="createSource">
-        <t:errors/>
-        <table class="grid">
-            <tbody>
-            <t:if test="newGroup">
-            <tr>
-                <td>Группа</td>
-                <td><input t:id="group" t:type="TextField" t:value="group"></input></td>
-            </tr>
-                <p:else>
+
+<div class="createform">
+    <div class="title">
+        Добавление новой номенклатуры сырья
+    </div>
+    <hr/>
+    <t:error.Error errors="errors"/>
+    <div class="size">
+        <div class="check">
+            <t:form>
+                <div style="margin-left: 200px">
+                    <t:checkbox t:id="newGroup" onclick="this.form.submit();"/>
+                    <t:label for="newGroup">Новая группа</t:label>
+
+                </div>
+            </t:form>
+        </div>
+        <div class="insideform">
+            <form t:type="form" t:id="createSource">
+                <t:errors/>
+                <table class="grid">
+                    <tbody>
+                    <t:if test="newGroup">
+                        <tr>
+                            <td width="25%">Группа</td>
+                            <td width="55%"><input t:id="group" t:type="TextField" t:value="group"></input></td>
+                        </tr>
+                        <p:else>
+                            <tr>
+                                <td width="25%">Группа</td>
+                                <td width="55%"><input t:id="groups" t:type="select" model="modelGroup"
+                                                       t:value="group"></input>
+                                </td>
+                            </tr>
+                        </p:else>
+                    </t:if>
                     <tr>
-                        <td>Группа</td>
-                        <td><input t:id="groups" t:type="select" model="modelGroup" t:value="group"></input></td>
+                        <td>Наименование</td>
+                        <td><input t:id="name" t:type="TextField" t:value="name"></input></td>
                     </tr>
-                </p:else>
-            </t:if>
-            <tr>
-                <td>Наименование</td>
-                <td><input t:id="name" t:type="TextField" t:value="name"></input></td>
-            </tr>
-            <tr>
-                <td>Инвентарный номер</td>
-                <td><input t:id="code" t:type="TextField" t:value="code"/></td>
-            </tr>
-            <tr>
-                <td>Еденицы измерения</td>
-                <td><input t:id="units" t:type="select"  t:value="units"/></td>
-            </tr>
-            <tr>
-                <td>Альтернативные еденицы измерения</td>
-                <td><input t:id="alternativUnits" t:type="select"  t:value="alternativUnits"/></td>
-            </tr>
-            <tr>
-                <td>Коефициент перевода</td>
-                <td><input t:id="rate" t:type="TextField" t:value="rate"/></td>
-            </tr>
-            <!--<tr>-->
-                <!--<td>Поставщик</td>-->
-                <!--<td><input t:id="provider" t:type="select" model="selectModel"  t:value="providerId"/></td>-->
-            <!--</tr>-->
-            </tbody>
-        </table>
-        <input t:type="submit" value="Сохранить"/>
-    </form>
+                    <tr>
+                        <td>Номенклатурный номер</td>
+                        <td><input t:id="code" t:type="TextField" t:value="code"/></td>
+                        <td><img src="${asset:context:images/qwe.png}" width="26pх"
+                                 alt="Для заполнения отчета для бухгалтерии"
+                                 title="Для заполнения отчета для бухгалтерии"/></td>
+
+                    </tr>
+                    <tr>
+                        <td>Единицы измерения</td>
+                        <td><input t:id="units" t:type="select" t:value="units"/></td>
+                        <td><img src="${asset:context:images/qwe.png}" width="26pх"
+                                 alt="Данная еденица измерения будет использоваться для формирования отчетов в бухгалтерию"
+                                 title="Данная еденица измерения будет использоваться для формирования отчетов в бухгалтерию"/></td>
+                    </tr>
+                    <tr>
+                        <td>Альтернативные единицы измерения</td>
+                        <td><input t:id="alternativUnits" t:type="select" t:value="alternativUnits"/></td>
+                    </tr>
+                    <tr>
+                        <td>Коэффициент перевода</td>
+                        <td><input t:id="rate" t:type="TextField" t:value="rate"/></td>
+                        <td><abbr title="Единица измерения">ЕИ</abbr>
+                            = <abbr title="Альтернативная единица измерения">АЕИ</abbr> *
+                            <abbr title="Коэффициент перевода">КП</abbr></td>
+                    </tr>
+                    </tbody>
+                </table><hr/>
+                <div class="button">
+
+                    <input t:type="submit" value="Сохранить"/>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 </html>

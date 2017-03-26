@@ -2,10 +2,12 @@ package com.example.t5.pages.create;
 
 import com.example.t5.data.Units;
 import com.example.t5.entities.*;
+import com.example.t5.excel.importexcel.ExcelWorker;
 import com.example.t5.pages.BasicPanel;
 import com.example.t5.pages.product.ProductList;
 import org.apache.tapestry5.*;
 import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.corelib.components.EventLink;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
@@ -30,7 +32,7 @@ import java.util.Locale;
  * Created by Калантаев Александр on 04.03.2017.
  */
 
-@Import(library={"context:js/price.js"})
+@Import(library = {"context:js/price.js"})
 public class CreateProduct extends BasicPanel {
 
     @InjectComponent("createProduct")
@@ -85,7 +87,6 @@ public class CreateProduct extends BasicPanel {
     @Persist
     @Property
     private Long buyerId;
-
     @Property
     private BigDecimal productPrice;
     @Persist
@@ -102,6 +103,11 @@ public class CreateProduct extends BasicPanel {
     @Property
     private String buyer;
     @Persist
+    private Long idForXls;
+    @Persist
+    @Property
+    private String note;
+    @Persist
     private boolean isOld;
     private Long id;
     @Persist
@@ -115,10 +121,10 @@ public class CreateProduct extends BasicPanel {
         List count = session.createQuery("select S.count from SourceSorageEntity S where source.id = :entId and " +
                 "id = (select max(S.id) from S where source.id = :entId)")
                 .setParameter("entId", id).list();
-        if (prise.isEmpty() || count.isEmpty()){
+        if (prise.isEmpty() || count.isEmpty()) {
             priceList.set(index, BigDecimal.ZERO);
         } else {
-            priceList.set(index, ((BigDecimal) prise.get(0)).divide(new BigDecimal((Double) count.get(0)), 2 , RoundingMode.HALF_UP));
+            priceList.set(index, ((BigDecimal) prise.get(0)).divide(new BigDecimal((Double) count.get(0)), 2, RoundingMode.HALF_UP));
         }
         return zoneChange.getBody();
     }
@@ -136,7 +142,7 @@ public class CreateProduct extends BasicPanel {
 
     void onActivate(Long id) {
         this.id = id;
-        if (id==-1L){
+        if (id == -1L) {
             setCreatedMode();
             name = null;
             buyerId = null;
@@ -152,7 +158,7 @@ public class CreateProduct extends BasicPanel {
             listTest.add(null);
             countList.add(0.0);
             priceSourceList.add(BigDecimal.ZERO);
-            sources = session.createCriteria(SourceEntity.class).list();
+            sources = session.createQuery("from SourceEntity where deleted != true").list();
             modelGroup = new SourceIdSelectModel(sources);
             this.id = null;
         }
@@ -160,30 +166,32 @@ public class CreateProduct extends BasicPanel {
 
     void setupRender() {
         if (id != null) {
+            idForXls = id;
             List<BuyerEntity> buyerList = session.createCriteria(BuyerEntity.class).list();
             buyerModel = new BuyerIdSelectModel(buyerList);
             sources = session.createCriteria(SourceEntity.class).list();
             modelGroup = new SourceIdSelectModel(sources);
             ProductEntity entity = (ProductEntity) session.get(ProductEntity.class, id);
             buyer = entity.getBuyerEntity().getNameOrganization();
-            if(entity.getTemplate()){
+            if (entity.getTemplate()) {
                 setTemplateMode();
             } else {
-                if(entity.getDateShipment() != null){
+                if (entity.getDateShipment() != null) {
                     setShowMode();
                 } else {
                     setShipmentMode();
                 }
             }
-            if(isShowMode() || isSipmentMode()){
+            if (isShowMode() || isSipmentMode()) {
                 stringNameSource = new ArrayList<String>();
-                for (SourceInProductEntity inProductEntity : entity.getSourceList()){
+                for (SourceInProductEntity inProductEntity : entity.getSourceList()) {
                     stringNameSource.add(inProductEntity.getSource().getName());
                 }
             } else {
                 stringNameSource = null;
             }
             name = entity.getName();
+            note = entity.getNote();
             productPrice = entity.getPrice();
             buyerId = entity.getBuyerEntity() != null ? entity.getBuyerEntity().getId() : null;
             dateCreate = entity.getDeteCreate();
@@ -202,7 +210,7 @@ public class CreateProduct extends BasicPanel {
         }
     }
 
-    public boolean isReadOnly(){
+    public boolean isReadOnly() {
         return isShowMode();
     }
 
@@ -210,20 +218,22 @@ public class CreateProduct extends BasicPanel {
         return listTest.get(index);
     }
 
-    public BigDecimal getPriceSourceValue(){
+    public BigDecimal getPriceSourceValue() {
         return priceSourceList.get(index);
     }
-    public void setPriceSourceValue(BigDecimal value){
+
+    public void setPriceSourceValue(BigDecimal value) {
         priceSourceList.set(index, value);
     }
 
-    public BigDecimal getPriceFromList(){
+    public BigDecimal getPriceFromList() {
         return priceList.get(index);
     }
 
-    public void setPriceFromList(BigDecimal value){
+    public void setPriceFromList(BigDecimal value) {
         priceList.set(index, value);
     }
+
     public Double getCountValue() {
         return countList.get(index);
     }
@@ -299,10 +309,10 @@ public class CreateProduct extends BasicPanel {
         return productList;
     }
 
-    Object onSelectedFromEdit() {
-        setCreatedMode();
-        return this;
-    }
+//    Object onSelectedFromEdit() {
+//        setCreatedMode();
+//        return this;
+//    }
 
     Object onSelectedFromEditSH() {
         setCreatedMode();
@@ -314,13 +324,35 @@ public class CreateProduct extends BasicPanel {
         return this;
     }
 
-    private ProductEntity createEntity(Boolean template){
+//    public Object onActionFromСreateXls() {
+//        System.out.println(idForXls);
+//        ExcelWorker.createXLS((ProductEntity) session.get(ProductEntity.class, idForXls));
+//        return this;
+//    }
+
+    void onXls() {
+        System.out.println(idForXls);
+        Setting setting = (Setting) session.get(Setting.class, 1L);
+
+        String path = setting != null ? setting.getValue().endsWith("\\") ? setting.getValue() : (setting.getValue()+"\\") : "C:\\";
+        ExcelWorker.createXLS((ProductEntity) session.get(ProductEntity.class, idForXls), path);
+
+    }
+
+    private ProductEntity createEntity(Boolean template) {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setName(name);
+        productEntity.setDeleted(false);
         productEntity.setTemplate(template);
+        if (dateCreate == null && !template) {
+            dateCreate = new Date();
+        }
+        System.out.println(dateCreate);
+        System.out.println(dateShipment);
         productEntity.setDeteCreate(dateCreate);
         productEntity.setDateShipment(dateShipment);
-        for (BigDecimal p : priceSourceList){
+        productEntity.setNote(note);
+        for (BigDecimal p : priceSourceList) {
             productPrice = productPrice.add(p);
         }
         productEntity.setPrice(productPrice);
@@ -330,15 +362,18 @@ public class CreateProduct extends BasicPanel {
         }
         List<SourceInProductEntity> sourseList = new ArrayList<SourceInProductEntity>();
         for (int i = 0; i < listTest.size(); i++) {
-            SourceInProductEntity sourceInProductEntity = new SourceInProductEntity();
-            SourceEntity entity = (SourceEntity) session.get(SourceEntity.class, listTest.get(i));
-            sourceInProductEntity.setSource(entity);
-            sourceInProductEntity.setCount(countList.get(i));
-            sourceInProductEntity.setUnits(entity.getUnits());
-            sourceInProductEntity.setPrice(priceSourceList.get(i));
-            sourceInProductEntity.setTemplates(template);
-            session.save(sourceInProductEntity);
-            sourseList.add(sourceInProductEntity);
+            if (listTest.get(i) != null) {
+                SourceInProductEntity sourceInProductEntity = new SourceInProductEntity();
+                SourceEntity entity = (SourceEntity) session.get(SourceEntity.class, listTest.get(i));
+                sourceInProductEntity.setSource(entity);
+                sourceInProductEntity.setCount(countList.get(i));
+                sourceInProductEntity.setUnits(entity.getUnits());
+                sourceInProductEntity.setPrice(priceSourceList.get(i));
+                sourceInProductEntity.setTemplates(template);
+                sourceInProductEntity.setDeleted(false);
+                session.save(sourceInProductEntity);
+                sourseList.add(sourceInProductEntity);
+            }
         }
         productEntity.setSourceList(sourseList);
         return productEntity;
@@ -353,29 +388,37 @@ public class CreateProduct extends BasicPanel {
         errors = null;
         priceList = null;
         priceSourceList = null;
+        dateCreate = null;
+        dateShipment = null;
+        note = null;
     }
 
     public boolean hasError() {
         return errors != null && !errors.isEmpty();
     }
 
-    public String getDateCreateinStr(){
-       return getStringFromData(dateCreate);
+    public String getDateCreateinStr() {
+        return getStringFromData(dateCreate);
     }
-    public void setDateCreateinStr(String str){}
 
-    public String getStringDateShipment(){
+    public void setDateCreateinStr(String str) {
+    }
+
+    public String getStringDateShipment() {
         return getStringFromData(dateShipment);
     }
-    public void setStringDateShipment(String s){}
 
-    public String getStringNameSource(){
+    public void setStringDateShipment(String s) {
+    }
+
+    public String getStringNameSource() {
         return stringNameSource.get(index);
     }
 
-    public void setStringNameSource(String s){}
+    public void setStringNameSource(String s) {
+    }
 
-    public boolean isShow(){
+    public boolean isShow() {
         return isShowMode() || isSipmentMode();
     }
 }

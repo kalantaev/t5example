@@ -1,9 +1,75 @@
 <html t:type="layout" title="t5 Index"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd">
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 <t:link.LinkInProvider/>
 <hr/>
 <H3>Все поставщики</H3>
-<t:grid source="providerList"/>
-
+<t:grid source="providerList"
+        include="nameOrganization, nameHead, inn, kpp, account, banc, bik, corAccount, phone, phoneMobail, adress"
+        add="action" row="provider">
+    <t:parameter name="nameOrganizationCell">
+        <t:pagelink t:page="edit/EditProvider" t:context="provider.id">
+            ${provider?.nameOrganization}
+        </t:pagelink>
+    </t:parameter>
+    <t:parameter name="nameHeadCell">
+        <t:pagelink t:page="edit/EditProvider" t:context="provider.id">
+            ${provider?.nameHead}
+        </t:pagelink>
+    </t:parameter>
+    <t:parameter name="innCell">
+        <t:pagelink t:page="edit/EditProvider" t:context="provider.id">
+            ${provider?.inn}
+        </t:pagelink>
+    </t:parameter>
+ <t:parameter name="kppCell">
+        <t:pagelink t:page="edit/EditProvider" t:context="provider.id">
+            ${provider?.kpp}
+        </t:pagelink>
+    </t:parameter>
+ <t:parameter name="accountCell">
+        <t:pagelink t:page="edit/EditProvider" t:context="provider.id">
+            ${provider?.account}
+        </t:pagelink>
+    </t:parameter>
+ <t:parameter name="bancCell">
+        <t:pagelink t:page="edit/EditProvider" t:context="provider.id">
+            ${provider?.banc}
+        </t:pagelink>
+    </t:parameter>
+ <t:parameter name="bikCell">
+        <t:pagelink t:page="edit/EditProvider" t:context="provider.id">
+            ${provider?.bik}
+        </t:pagelink>
+    </t:parameter>
+ <t:parameter name="corAccountCell">
+        <t:pagelink t:page="edit/EditProvider" t:context="provider.id">
+            ${provider?.corAccount}
+        </t:pagelink>
+    </t:parameter>
+ <t:parameter name="phoneCell">
+        <t:pagelink t:page="edit/EditProvider" t:context="provider.id">
+            ${provider?.phone}
+        </t:pagelink>
+    </t:parameter>
+ <t:parameter name="phoneMobailCell">
+        <t:pagelink t:page="edit/EditProvider" t:context="provider.id">
+            ${provider?.phoneMobail}
+        </t:pagelink>
+    </t:parameter>
+ <t:parameter name="adressCell">
+        <t:pagelink t:page="edit/EditProvider" t:context="provider.id">
+            ${provider?.adress}
+        </t:pagelink>
+    </t:parameter>
+    <t:parameter name="actionCell">
+        <t:actionlink t:id="remove"
+                      t:mixins="Confirm"
+                      message="Вы действительно хотите удалить поставщика?"
+                      t:context="provider.id">
+            <img src="${asset:context:images/delete.png}"
+                 alt="Удалить" title="Удалить"/>
+        </t:actionlink>
+    </t:parameter>
+</t:grid>
 
 </html>

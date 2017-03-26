@@ -3,7 +3,7 @@
       xmlns:p="tapestry:parameter">
 <t:link.LinkInProduct/>
 
-<t:grid t:source="productList" rowsPerPage="10"  include="id, name, price"
+<t:grid t:source="productList" rowsPerPage="20"  include="id, name, price"
         row="product">
     <t:parameter name="idCell">
         <t:pagelink t:page="create/createProduct" t:context="product.id">

@@ -2,9 +2,13 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
       xmlns:p="tapestry:parameter">
 <t:link.LinkInProduct/>
-
-<table t:type="grid" t:source="productList" t:row="product" t:include="id, name, deteCreate, dateShipment, price"  t:add="action"
-       t:rowsPerPage="4" t:pagerPosition="top">[Grid here]
+<t:If test="showxls">
+    <div style="color:red">
+        Отчет не удалось сформировать
+    </div>
+</t:If>
+<table t:type="grid" t:source="productList" t:row="product" t:include="id, name, deteCreate, dateShipment, price"  t:add="buyer, action"
+       t:rowsPerPage="20" t:pagerPosition="top">[Grid here]
     <t:parameter name="idCell">
         <t:pagelink t:page="create/createProduct" t:context="product.id">
             ${getIndx()}
@@ -25,13 +29,32 @@
             ${getDateShipment()}
         </t:pagelink>
     </t:parameter>
-    <t:parameter name="dateShipmentCell">
+    <t:parameter name="priceCell">
         <t:pagelink t:page="create/createProduct" t:context="product.id">
             ${product?.price}
         </t:pagelink>
     </t:parameter>
+    <t:parameter name="buyerCell">
+        <t:pagelink t:page="create/createProduct" t:context="product.id">
+            ${product?.buyerEntity?.nameOrganization}
+        </t:pagelink>
+    </t:parameter>
     <p:actionCell>
-        <t:actionlink t:id="remove" t:context="product.id">Удалить</t:actionlink>
+        <t:actionlink t:id="remove"
+                      t:mixins="Confirm"
+                      message="Вы действительно хотите удалить данную продукцию?"
+                      t:context="product.id">
+            <img src="${asset:context:images/delete.png}"
+                 alt="Удалить" title="Удалить"/>
+        </t:actionlink>
+        <t:pagelink t:page="edit/editProduct" t:context="product.id">
+            <img src="${asset:context:images/edit.png}" width="26pх"
+                 alt="Редактировать" title="Редактировать"/>
+        </t:pagelink>
+        <t:eventlink t:event="xls" t:context="product.id" >
+            <img src="${asset:context:images/xls.png}" width="26pх"
+                 alt="Сформировать отчет" title="Сформировать отчет"/>
+        </t:eventlink><br/>
     </p:actionCell>
 </table>
 </html>

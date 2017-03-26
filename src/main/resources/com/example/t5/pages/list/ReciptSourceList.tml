@@ -1,0 +1,45 @@
+<html t:type="layout" title="t5 Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:link.LinkInSource/>
+<hr/>
+<H3>${getTitle()}</H3>
+
+<t:error.Error errors="errors"/>
+<t:grid t:source="sourseList" rowsPerPage="20" include="date, count, residue, price, note" add="action" row="source">
+    <t:parameter name="dateCell">
+        <t:pagelink t:page="edit/EditReciptSource" t:context="source.id">
+            ${source?.date}
+        </t:pagelink>
+    </t:parameter>
+    <t:parameter name="countCell">
+        <t:pagelink t:page="edit/EditReciptSource" t:context="source.id">
+            ${source?.count}
+        </t:pagelink>
+    </t:parameter>
+    <t:parameter name="residueCell">
+        <t:pagelink t:page="edit/EditReciptSource" t:context="source.id">
+            ${source?.residue}
+        </t:pagelink>
+    </t:parameter>
+    <t:parameter name="priceCell">
+        <t:pagelink t:page="edit/EditReciptSource" t:context="source.id">
+            ${source.price}
+        </t:pagelink>
+    </t:parameter>
+    <t:parameter name="noteCell">
+        <t:pagelink t:page="edit/EditReciptSource" t:context="source.id">
+            ${source.note}
+        </t:pagelink>
+    </t:parameter>
+    <t:parameter name="actionCell">
+        <t:actionlink t:id="remove"
+                      t:mixins="Confirm"
+                      message="Вы действительно хотите удалить приход?"
+                      t:context="source.id">
+            <img src="${asset:context:images/delete.png}"
+                 alt="Удалить" title="Удалить"/>
+        </t:actionlink>
+    </t:parameter>
+</t:grid>
+
+</html>

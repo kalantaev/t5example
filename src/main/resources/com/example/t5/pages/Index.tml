@@ -1,10 +1,8 @@
 <html t:type="layout" title="t5 Index"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
         >
-
-    <div class="hero-unit">
-        <h3>Это типа стартовая стрвница. Тут можно расположить какуюто полезную информацию. <br/>
-        Например сколько бытовок всего отгружено, сколько на складе, сколько $ потрачено, сколько заработано... </h3>
-    </div>
+<img src="${asset:context:images/banner.jpg}" width="100%" style="margin-top:-20px"/>
+   <label>Продукции на складе:&nbsp;&nbsp;${getCountFromStorage()}</label><br/>
+   <label>Произведено за весь период:&nbsp;&nbsp;${getCount()}</label>
 
 </html>

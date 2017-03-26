@@ -20,7 +20,15 @@ public class ProviderEntity {
     private String phone;
     private String phoneMobail;
     private String adress;
-
+    private Boolean deleted;
+    @Basic
+    @Column(name = "DELETED")
+    public Boolean getDeleted() {
+        return deleted;
+    }
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, insertable = true, updatable = true)

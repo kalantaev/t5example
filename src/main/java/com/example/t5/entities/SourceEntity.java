@@ -19,7 +19,15 @@ public class SourceEntity implements Serializable{
     private Double rate;
     private Units units;
     private Units altunits;
-
+    private Boolean deleted;
+    @Basic
+    @Column(name = "DELETED")
+    public Boolean getDeleted() {
+        return deleted;
+    }
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
     @Inject
     public SourceEntity () {
 

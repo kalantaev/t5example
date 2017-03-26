@@ -1,0 +1,31 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+             xmlns:p="tapestry:parameter">
+    <tr>
+
+        <t:if test="show">
+            <td><input t:type="TextField" readonly="true" t:value="${names}"></input></td>
+            <p:else>
+                <!--<td><input t:type="select" model="modelGroup" t:value="entity" zone="zoneChange"/>-->
+                <!--</td>-->
+            </p:else>
+        </t:if>
+
+        <!--<t:if test="${show}">-->
+            <!--<td><input t:type="TextField" readonly="true" t:value="${counts}"></input></td>-->
+            <!--<p:else>-->
+                <!--<td><input class="count" t:id="count" t:type="TextField" t:value="${counts}"-->
+                           <!--onkeyup="changePrice()"/></td>-->
+            <!--</p:else>-->
+        <!--</t:if>-->
+        <!--&lt;!&ndash;<td><t:outputraw value="${getUnitsModel()}" /></td>&ndash;&gt;-->
+        <!--<td><input class="price" t:id="priceSource" readonly="literal:true" t:type="TextField"-->
+                   <!--t:value="${prices}"/></td>-->
+        <!--<td><input class="pricehiden" t:id="priceList" type="hidden" readonly="literal:true"-->
+                   <!--t:type="TextField" t:value="priceFromList"/></td>-->
+        <!--<td>-->
+            <!--<t:if test="${!isShow()}">-->
+                <!--<t:submit t:id="remove" t:context="index" value="-"/>-->
+            <!--</t:if>-->
+        <!--</td>-->
+    </tr>
+</t:container>

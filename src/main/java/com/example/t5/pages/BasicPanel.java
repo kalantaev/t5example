@@ -136,11 +136,11 @@ public class BasicPanel {
         } else if (Units.M3 == units) {
             return "м<sup>3</sup>";
         } else if (Units.TN == units) {
-            return "тн";
+            return "т";
         } else if (Units.SHT == units) {
             return "шт";
         } else if (Units.PM == units) {
-            return "п.м";
+            return "пог.м";
         }
         return "";
     }

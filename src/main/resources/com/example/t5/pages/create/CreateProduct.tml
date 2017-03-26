@@ -61,6 +61,19 @@
                     </t:if>
                 </tr>
                 <tr>
+                    <td>Примечание</td>
+                    <t:if test="${isShowMode()}">
+                        <td>
+                            <input t:type="TextArea" t:value="note" readonly="true"/>
+                        </td>
+                        <p:else>
+                            <td>
+                                <input t:type="TextArea" t:value="note"/>
+                            </td>
+                        </p:else>
+                    </t:if>
+                </tr>
+                <tr>
                     <td>№ п/п</td>
                     <td>Сырье</td>
                     <td>Количество</td>
@@ -85,7 +98,9 @@
                                        onkeyup="changePrice()"/></td>
                         </p:else>
                     </t:if>
-                    <td><t:outputraw value="${getUnitsModel()}" /></td>
+                    <td>
+                        <t:outputraw value="${getUnitsModel()}"/>
+                    </td>
                     <td><input class="price" t:id="priceSource" readonly="literal:true" t:type="TextField"
                                t:value="priceSourceValue"/></td>
                     <td><input class="pricehiden" t:id="priceList" type="hidden" readonly="literal:true"
@@ -111,11 +126,15 @@
                 </tbody>
             </table>
             <t:if test="${isShowMode()}">
-                <t:submit submit="false" t:id="edit" value="Редактировать"/>
+                <!--<t:actionlink t:id="createXls">-->
+                  <!--<label> Сформировать отчет</label>-->
+                <!--</t:actionlink>-->
+                <t:eventlink t:event="xls" >Сформировать отчет</t:eventlink><br/>
                 <p:else>
                     <t:if test="${isSipmentMode()}">
                         <t:submit submit="false" t:id="editSH" value="Редактировать"/>
-                        <t:submit submit="false" t:id="shipment" value="Списать" hint="Если не указать дату отгрузки будет использована текущая дата"/>
+                        <t:submit submit="false" t:id="shipment" value="Списать"
+                                  hint="Если не указать дату отгрузки будет использована текущая дата"/>
                         <p:else>
                             <input t:type="submit" value="Сохранить"/>
                             <t:submit submit="true" t:id="saveAsTemplate" value="Сохранить как шаблон"/>

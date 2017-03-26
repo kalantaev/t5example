@@ -1,0 +1,68 @@
+<html t:type="layout" title="t5 Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+        >
+<t:link.LinkInProvider/>
+<hr/>
+<div style="width: 25%">
+
+
+
+    <form t:type="form" t:id="createProvider">
+        <t:errors/>
+        <table class="grid">
+            <tbody>
+
+            <tr>
+                <td>Наименование организации</td>
+                <td><input t:id="nameOrganization" t:type="TextField" t:value="nameOrganization"/></td>
+            </tr>
+
+
+            <tr>
+                <td>Представитель организации</td>
+                <td><input t:id="nameHead" t:type="TextField" t:value="nameHead"/></td>
+            </tr>
+            <tr>
+                <td>Телефон</td>
+                <td><input t:id="phone" t:type="TextField" t:value="phone"/></td>
+            </tr>
+            <tr>
+                <td>Мобильный телефон</td>
+                <td><input t:id="phoneMobail" t:type="TextField" t:value="phoneMobail"/></td>
+            </tr>
+            <tr>
+                <td>ИНН</td>
+                <td><input t:id="inn" t:type="TextField" t:value="inn"/></td>
+            </tr>
+            <tr>
+                <td>КПП</td>
+                <td><input t:id="kpp" t:type="TextField" t:value="kpp"/></td>
+            </tr>
+            <tr>
+                <td>Расчетный счет</td>
+                <td><input t:id="account" t:type="TextField" t:value="account"/></td>
+            </tr>
+
+            <tr>
+                <td>Банк</td>
+                <td><input t:id="banc" t:type="TextField" t:value="banc"/></td>
+            </tr>
+
+            <tr>
+                <td>БИК</td>
+                <td><input t:id="bik" t:type="TextField" t:value="bik"/></td>
+            </tr>
+            <tr>
+                <td>Кореспондентский счет</td>
+                <td><input t:id="corAccount" t:type="TextField" t:value="corAccount"/></td>
+            </tr>
+
+
+
+
+            </tbody>
+        </table>
+        <input t:type="submit" value="Обновить"/>
+    </form>
+</div>
+</html>
