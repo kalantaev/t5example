@@ -3,16 +3,17 @@
       xmlns:p="tapestry:parameter">
 <t:link.LinkInProduct/>
 
-<div style="width: 75%">
+<div class="createform">
+<div class="title">
+    Создание продукции
+</div>
+<hr/>
+<t:error.Error errors="errors"/>
+<div class="size">
     <t:zone t:id="zoneChange" id="zoneChange">
         <!-- форма-->
         <form t:type="form" t:id="createProduct">
-            <!-- вывод ошибок-->
-            <t:if test="${hasError()}">
-                <tr t:type="Loop" t:source="errors" t:value="error" t:index="index">
-                    <div style="color: red">${error}<br/></div>
-                </tr>
-            </t:if>
+
             <table class="grid">
                 <tbody>
                 <tr>
@@ -124,26 +125,30 @@
                     </t:if>
                 </tr>
                 </tbody>
-            </table>
+            </table><hr/>
+            <div class="button">
             <t:if test="${isShowMode()}">
-                <!--<t:actionlink t:id="createXls">-->
-                  <!--<label> Сформировать отчет</label>-->
-                <!--</t:actionlink>-->
                 <t:eventlink t:event="xls" >Сформировать отчет</t:eventlink><br/>
                 <p:else>
                     <t:if test="${isSipmentMode()}">
                         <t:submit submit="false" t:id="editSH" value="Редактировать"/>
+                        <div class="padding-left">
                         <t:submit submit="false" t:id="shipment" value="Списать"
                                   hint="Если не указать дату отгрузки будет использована текущая дата"/>
+                        </div>
                         <p:else>
                             <input t:type="submit" value="Сохранить"/>
+                            <div class="padding-left">
                             <t:submit submit="true" t:id="saveAsTemplate" value="Сохранить как шаблон"/>
+                            </div>
                         </p:else>
                     </t:if>
                 </p:else>
             </t:if>
+            </div>
 
         </form>
     </t:zone>
+    </div>
 </div>
 </html>

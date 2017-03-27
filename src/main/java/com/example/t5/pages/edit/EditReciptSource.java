@@ -155,7 +155,8 @@ public class EditReciptSource extends BasicPanel {
             } else {
                 d = Math.abs(d);
                 List<SourceSorageEntity> list = session.createQuery("from SourceSorageEntity S where residue > :d " +
-                        "and deleted != true and id = (select min(id) from S where residue >= :d )").setParameter("d", d).list();
+                        "and deleted != true and id = (select min(id) from S where residue >= :d ) and source = :source")
+                        .setParameter("source", sse.getSource()).setParameter("d", d).list();
                 if (!list.isEmpty()) {
                     SourceSorageEntity sseUp = list.get(0);
                     sseUp.setResidue(sseUp.getResidue() - d);
@@ -188,10 +189,12 @@ public class EditReciptSource extends BasicPanel {
         SourceSorageEntity sse = (SourceSorageEntity) session.get(SourceSorageEntity.class, id);
         try {
             Double allResidue = (Double) session.createQuery("select sum(residue) from SourceSorageEntity " +
-                    "where deleted != true and id != :id").setParameter("id", id).list().get(0);
+                    "where deleted != true and id != :id and source = :source")
+                    .setParameter("source", sse.getSource()).setParameter("id", id).list().get(0);
             if((allResidue -(sse.getCount()- sse.getResidue())) >= 0 ){
                 List<SourceSorageEntity> list = session.createQuery("from SourceSorageEntity S where residue > 0 " +
-                        "and deleted != true and id != :entId").setParameter("entId", sse.getId()).list();
+                        "and deleted != true and id != :entId and source = :source")
+                        .setParameter("source", sse.getSource()).setParameter("entId", sse.getId()).list();
                 Double needUpd = sse.getCount()- sse.getResidue();
                 for (SourceSorageEntity ent : list){
                    if(ent.getResidue()>=needUpd ){
@@ -212,9 +215,17 @@ public class EditReciptSource extends BasicPanel {
             }
         } catch (Exception e){
             System.out.println(e);
-            errors.add("Невозможно удалить данный приход, так как в случае удаления расход сырья превысит приход." +
-                    " Необходимо добавить новый приход и повторить попытку");
-            return this;
+            List<SourceSorageEntity> list = session.createQuery("from SourceSorageEntity " +
+                    "where deleted != true and source = :source")
+                    .setParameter("source", sse.getSource()).list();
+            if(list !=null && list.size() == 1 && list.get(0).getCount().equals(list.get(0).getResidue())){
+                list.get(0).setDeleted(true);
+                session.update(list.get(0));
+            } else {
+                errors.add("Невозможно удалить данный приход, так как в случае удаления расход сырья превысит приход." +
+                        " Необходимо добавить новый приход и повторить попытку");
+                return this;
+            }
         }
         sse.setDeleted(true);
         session.update(sse);

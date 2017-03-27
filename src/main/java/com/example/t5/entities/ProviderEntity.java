@@ -21,6 +21,18 @@ public class ProviderEntity {
     private String phoneMobail;
     private String adress;
     private Boolean deleted;
+
+    private String email;
+    @Basic
+    @Column(name = "EMAIL")
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Basic
     @Column(name = "DELETED")
     public Boolean getDeleted() {

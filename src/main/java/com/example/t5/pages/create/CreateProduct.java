@@ -5,24 +5,17 @@ import com.example.t5.entities.*;
 import com.example.t5.excel.importexcel.ExcelWorker;
 import com.example.t5.pages.BasicPanel;
 import com.example.t5.pages.product.ProductList;
-import org.apache.tapestry5.*;
+import org.apache.tapestry5.PersistenceConstants;
+import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.*;
-import org.apache.tapestry5.corelib.components.EventLink;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
-import org.apache.tapestry5.internal.OptionModelImpl;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.PersistentLocale;
-import org.apache.tapestry5.services.javascript.JavaScriptSupport;
-import org.apache.tapestry5.util.AbstractSelectModel;
 import org.hibernate.Session;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DateFormat;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +25,8 @@ import java.util.Locale;
  * Created by Калантаев Александр on 04.03.2017.
  */
 
-@Import(library = {"context:js/price.js"})
+@Import(library = {"context:js/price.js"},
+        stylesheet = "context:style/createform.css")
 public class CreateProduct extends BasicPanel {
 
     @InjectComponent("createProduct")
@@ -41,6 +35,7 @@ public class CreateProduct extends BasicPanel {
     @Property
     @Persist
     private String name;
+
     //поле формы
     @Property
     @Persist
@@ -89,7 +84,7 @@ public class CreateProduct extends BasicPanel {
     private Long buyerId;
     @Property
     private BigDecimal productPrice;
-    @Persist
+    @Persist(PersistenceConstants.FLASH)
     @Property
     private List<String> errors;
     @Property
@@ -280,7 +275,7 @@ public class CreateProduct extends BasicPanel {
         }
     }
 
-    private boolean validateAndSave() {
+    private boolean validateAndSave(boolean template) {
         errors = new ArrayList<String>();
         if (name == null) {
             errors.add("Поле наименование должно быть заполнено");
@@ -288,12 +283,27 @@ public class CreateProduct extends BasicPanel {
         if (listTest.isEmpty()) {
             errors.add("Не выбрано ни одно сырье");
         }
+        if (!template) {
+            for (int i = 0; i < listTest.size(); i++) {
+                try {
+                    Double allResidue = (Double) session.createQuery("select sum(residue) from SourceSorageEntity " +
+                            "where deleted != true and source.id = :source").setParameter("source", listTest.get(i)).list().get(0);
+                    if (allResidue < countList.get(i)) {
+                        errors.add("Невозможно списать данную продукцию. Недостаточно сырья \""
+                                + ((SourceEntity) session.get(SourceEntity.class, listTest.get(i))).getName() + "\" на складе.");
+                    }
+                } catch (Exception e) {
+                    errors.add("Невозможно списать данную продукцию. Недостаточно сырья \""
+                            + ((SourceEntity) session.get(SourceEntity.class, listTest.get(i))).getName() + "\" на складе.");
+                }
+            }
+        }
         return errors.isEmpty();
     }
 
     @CommitAfter
     Object onSuccessFromCreateProduct() {
-        if (!validateAndSave()) return this;
+        if (!validateAndSave(false)) return this;
         ProductEntity productEntity = createEntity(false);
         session.save(productEntity);
         clearPanel();
@@ -302,17 +312,13 @@ public class CreateProduct extends BasicPanel {
 
     @CommitAfter
     Object onSelectedFromSaveAsTemplate() {
-        if (!validateAndSave()) return this;
+        if (!validateAndSave(true)) return this;
         ProductEntity productEntity = createEntity(true);
         session.save(productEntity);
         clearPanel();
         return productList;
     }
 
-//    Object onSelectedFromEdit() {
-//        setCreatedMode();
-//        return this;
-//    }
 
     Object onSelectedFromEditSH() {
         setCreatedMode();
@@ -324,17 +330,12 @@ public class CreateProduct extends BasicPanel {
         return this;
     }
 
-//    public Object onActionFromСreateXls() {
-//        System.out.println(idForXls);
-//        ExcelWorker.createXLS((ProductEntity) session.get(ProductEntity.class, idForXls));
-//        return this;
-//    }
 
     void onXls() {
         System.out.println(idForXls);
         Setting setting = (Setting) session.get(Setting.class, 1L);
 
-        String path = setting != null ? setting.getValue().endsWith("\\") ? setting.getValue() : (setting.getValue()+"\\") : "C:\\";
+        String path = setting != null ? setting.getValue().endsWith("\\") ? setting.getValue() : (setting.getValue() + "\\") : "C:\\";
         ExcelWorker.createXLS((ProductEntity) session.get(ProductEntity.class, idForXls), path);
 
     }
@@ -347,18 +348,31 @@ public class CreateProduct extends BasicPanel {
         if (dateCreate == null && !template) {
             dateCreate = new Date();
         }
-        System.out.println(dateCreate);
-        System.out.println(dateShipment);
         productEntity.setDeteCreate(dateCreate);
         productEntity.setDateShipment(dateShipment);
         productEntity.setNote(note);
-        for (BigDecimal p : priceSourceList) {
-            productPrice = productPrice.add(p);
-        }
         productEntity.setPrice(productPrice);
         if (buyerId != null) {
             BuyerEntity be = (BuyerEntity) session.get(BuyerEntity.class, buyerId);
             productEntity.setBuyerEntity(be);
+        }
+        if (!template) {
+            for (int i = 0; i < listTest.size(); i++) {
+                List<SourceSorageEntity> list = session.createQuery("from SourceSorageEntity S where residue > 0 " +
+                        "and deleted != true and source.id = :entId").setParameter("entId", listTest.get(i)).list();
+                Double needUpd = countList.get(i);
+                for (SourceSorageEntity ent : list) {
+                    if (ent.getResidue() >= needUpd) {
+                        ent.setResidue(ent.getResidue() - needUpd);
+                        session.update(ent);
+                        break;
+                    } else {
+                        needUpd = needUpd - ent.getResidue();
+                        ent.setResidue(0d);
+                        session.update(ent);
+                    }
+                }
+            }
         }
         List<SourceInProductEntity> sourseList = new ArrayList<SourceInProductEntity>();
         for (int i = 0; i < listTest.size(); i++) {

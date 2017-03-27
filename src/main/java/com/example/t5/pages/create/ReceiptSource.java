@@ -58,7 +58,7 @@ public class ReceiptSource extends BasicPanel {
 
     @Property
     private String units;
- @Property
+    @Property
     private String note;
 
     @Property
@@ -89,6 +89,7 @@ public class ReceiptSource extends BasicPanel {
     @Persist(PersistenceConstants.FLASH)
     @Property
     private List<String> errors;
+
     Object onValueChangedFromGroup(String group) {
         if ("Все категории".equals(group)) {
             sourceModel = new SourceIdSelectModel(session.createQuery("from SourceEntity where deleted != true").list());
@@ -122,7 +123,7 @@ public class ReceiptSource extends BasicPanel {
 
     void onPrepareForRender() {
         List<String> groupSet = session.createQuery("select distinct S.group from SourceEntity S where deleted != true").list();
-        List<SourceEntity> sourceList =new ArrayList<SourceEntity>();
+        List<SourceEntity> sourceList = new ArrayList<SourceEntity>();
         List<ProviderEntity> providerList = session.createQuery("from ProviderEntity where deleted != true").list();
         groupSet.add("Все категории");
         providerModel = new ProviderIdSelectModel(providerList);
@@ -135,15 +136,15 @@ public class ReceiptSource extends BasicPanel {
         return DateFormat.getDateInstance(DateFormat.SHORT, currentLocale);
     }
 
-    private boolean validate(){
+    private boolean validate() {
         errors = new ArrayList<String>();
-        if(sourceId == null){
+        if (sourceId == null) {
             errors.add("Поле \"Сырье\" должно быть заполнено.");
         }
-        if(count == null || count == 0) {
+        if (count == null || count == 0) {
             errors.add("Поле \"Количество\" должно быть заполнено и не равнятся нулю.");
         }
-        if(price == null || BigDecimal.ZERO.compareTo(price) == 0){
+        if (price == null || BigDecimal.ZERO.compareTo(price) == 0) {
             errors.add("Поле \"Стоимость\" должно быть заполнено и не равнятся нулю.");
         }
         return !errors.isEmpty();
@@ -151,7 +152,7 @@ public class ReceiptSource extends BasicPanel {
 
     @CommitAfter
     Object onSuccess() {
-        if(validate()) return this;
+        if (validate()) return this;
         SourceSorageEntity sse = new SourceSorageEntity();
         sse.setPrice(price);
         sse.setDate(receiptDate);
@@ -161,7 +162,7 @@ public class ReceiptSource extends BasicPanel {
         }
         SourceEntity se = (SourceEntity) session.get(SourceEntity.class, sourceId);
         Units un = Helper.StringToUnits(units);
-        if(un == se.getAltunits()){
+        if (un == se.getAltunits()) {
             count = count * se.getRate();
         }
         sse.setCount(count);
@@ -170,7 +171,7 @@ public class ReceiptSource extends BasicPanel {
         sse.setDeleted(false);
         sse.setResidue(count);
         session.save(sse);
-        group=null;
+        group = null;
         return sourceList;
     }
 }

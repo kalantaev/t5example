@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <div class="navbar-collapse collapse">
+    <div class="navbar-collapse collapse margin-top">
         <ul class="nav navbar-nav">
             <li>
                 <t:pagelink page="list/buyerlist">Список покупателей</t:pagelink>

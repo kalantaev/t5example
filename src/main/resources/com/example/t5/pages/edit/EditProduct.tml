@@ -3,141 +3,155 @@
       xmlns:p="tapestry:parameter">
 <t:link.LinkInProduct/>
 
-<div style="width: 75%">
-    <t:zone t:id="zoneChange" id="zoneChange">
-        <!-- форма-->
-        <form t:type="form" t:id="createProduct">
-            <!-- вывод ошибок-->
-            <t:if test="${hasError()}">
-                <tr t:type="Loop" t:source="errors" t:value="error" t:index="index">
-                    <div style="color: red">${error}<br/></div>
-                </tr>
-            </t:if>
-            <table class="grid">
-                <tbody>
-                <tr>
-                    <td width="15%">Наименование</td>
-                    <t:if test="${isShow()}">
-                        <td width="50%"><input t:type="TextField" readonly="true" t:value="name"></input></td>
-                        <p:else>
-                            <td width="50%"><input t:id="name" t:type="TextField" t:value="name"></input></td>
-                        </p:else>
-                    </t:if>
-                </tr>
-                <tr>
-                    <td>Покупатель</td>
-                    <!--<t:if test="${isShow()}">-->
+<div class="createform">
+    <div class="title">
+        Редактирование продукции
+    </div>
+    <hr/>
+    <t:error.Error errors="errors"/>
+    <div class="size">
+        <t:zone t:id="zoneChange" id="zoneChange">
+            <!-- форма-->
+            <form t:type="form" t:id="createProduct">
+
+                <table class="grid">
+                    <tbody>
+                    <tr>
+                        <td width="15%">Наименование</td>
+                        <t:if test="${isShow()}">
+                            <td width="50%"><input t:type="TextField" readonly="true" t:value="name"></input></td>
+                            <p:else>
+                                <td width="50%"><input t:id="name" t:type="TextField" t:value="name"></input></td>
+                            </p:else>
+                        </t:if>
+                    </tr>
+                    <tr>
+                        <td>Покупатель</td>
+                        <!--<t:if test="${isShow()}">-->
                         <!--<td><input t:type="TextField" readonly="true" t:value="buyer"></input></td>-->
                         <!--<p:else>-->
-                            <td><input t:id="buyer" t:type="select" model="buyerModel" t:value="buyerId"/></td>
+                        <td><input t:id="buyer" t:type="select" model="buyerModel" t:value="buyerId"/></td>
                         <!--</p:else>-->
-                    <!--</t:if>-->
+                        <!--</t:if>-->
 
-                    <td></td>
-                    <td></td>
-                    <td>Цена изделия</td>
-                </tr>
-                <tr>
-                    <td>Дата изготовления</td>
-                    <t:if test="${isShow()}">
-                        <td><input t:type="TextField" t:value="dateCreateinStr" readonly="true"/></td>
-                        <p:else>
-                            <td><input t:id="dateCreate" t:type="DateField" t:format="d.M.Y"
-                                       t:value="dateCreate"/></td>
-                        </p:else>
-                    </t:if>
-                    <td></td>
-                    <td></td>
-                    <td><input class="allsum" t:type="TextField" t:value="productPrice" readonly="true"/></td>
-                </tr>
-                <tr>
-                    <td>Дата отгрузки</td>
-                    <t:if test="${isShowMode()}">
-                        <td><input t:type="TextField" t:value="stringDShipment" readonly="true"/></td>
-                        <p:else>
-                            <td><input t:id="dateShipment" t:type="DateField" t:format="prop:dateFormat" t:value="dateShipment"/>
-                            </td>
-                        </p:else>
-                    </t:if>
-                </tr>
-                <tr>
-                    <td>Примечание</td>
-                    <t:if test="${isShowMode()}">
-                        <td>
-                            <input t:type="TextArea" t:value="note" readonly="true"/>
-                        </td>
-                        <p:else>
-                            <td>
-                                <input t:type="TextArea" t:value="note"/>
-                            </td>
-                        </p:else>
-                    </t:if>
-                </tr>
-                <tr>
-                    <td>№ п/п</td>
-                    <td>Сырье</td>
-                    <td>Количество</td>
-                    <td>Еденицы измерения</td>
-                    <td>Цена</td>
-                </tr>
-                <tr t:type="Loop" t:source="listTest" t:value="test" t:index="index">
-                    <td>${getIndexForRender()}</td>
-                    <t:if test="${isShow()}">
-                        <td><input t:type="TextField" readonly="true" t:value="stringNameSource"></input></td>
-                        <p:else>
-                            <td><input t:type="select" model="modelGroup" t:value="value" t:context="index"
-                                       zone="zoneChange"/>
-                            </td>
-                        </p:else>
-                    </t:if>
-
-                    <t:if test="${isShow()}">
-                        <td><input t:type="TextField" readonly="true" t:value="countValue"></input></td>
-                        <p:else>
-                            <td><input class="count" t:id="count" t:type="TextField" t:value="countValue"
-                                       onkeyup="changePrice()"/></td>
-                        </p:else>
-                    </t:if>
-                    <td><t:outputraw value="${getUnitsModel()}" /></td>
-                    <td><input class="price" t:id="priceSource" readonly="literal:true" t:type="TextField"
-                               t:value="priceSourceValue"/></td>
-                    <td><input class="pricehiden" t:id="priceList" type="hidden" readonly="literal:true"
-                               t:type="TextField" t:value="priceFromList"/></td>
-                    <td>
-                        <t:if test="${!isShow()}">
-                            <t:submit t:id="remove" t:context="index" value="-"/>
+                        <td></td>
+                        <td></td>
+                        <td>Цена изделия</td>
+                    </tr>
+                    <tr>
+                        <td>Дата изготовления</td>
+                        <t:if test="${isShow()}">
+                            <td><input t:type="TextField" t:value="dateCreateinStr" readonly="true"/></td>
+                            <p:else>
+                                <td><input t:id="dateCreate" t:type="DateField" t:format="d.M.Y"
+                                           t:value="dateCreate"/></td>
+                            </p:else>
                         </t:if>
-                    </td>
-                </tr>
-                <tr>
-                    <t:if test="${!isShow()}">
                         <td></td>
-                        <td>
-                            <t:submit submit="true" t:id="add" value="+"/>
-                        </td>
                         <td></td>
-                        <td>
+                        <td><input class="allsum" t:type="TextField" t:value="productPrice" readonly="true"/></td>
+                    </tr>
+                    <tr>
+                        <td>Дата отгрузки</td>
+                        <t:if test="${isShowMode()}">
+                            <td><input t:type="TextField" t:value="stringDShipment" readonly="true"/></td>
+                            <p:else>
+                                <td><input t:id="dateShipment" t:type="DateField" t:format="prop:dateFormat"
+                                           t:value="dateShipment"/>
+                                </td>
+                            </p:else>
+                        </t:if>
+                    </tr>
+                    <tr>
+                        <td>Примечание</td>
+                        <t:if test="${isShowMode()}">
+                            <td>
+                                <input t:type="TextArea" t:value="note" readonly="true"/>
+                            </td>
+                            <p:else>
+                                <td>
+                                    <input t:type="TextArea" t:value="note"/>
+                                </td>
+                            </p:else>
+                        </t:if>
+                    </tr>
+                    <tr>
+                        <td>№ п/п</td>
+                        <td>Сырье</td>
+                        <td>Количество</td>
+                        <td>Еденицы измерения</td>
+                        <td>Цена</td>
+                    </tr>
+                    <tr t:type="Loop" t:source="listTest" t:value="test" t:index="index">
+                        <td>${getIndexForRender()}</td>
+                        <t:if test="${isShow()}">
+                            <td><input t:type="TextField" readonly="true" t:value="stringNameSource"></input></td>
+                            <p:else>
+                                <td><input t:type="select" model="modelGroup" t:value="value" t:context="index"
+                                           zone="zoneChange"/>
+                                </td>
+                            </p:else>
+                        </t:if>
 
+                        <t:if test="${isShow()}">
+                            <td><input t:type="TextField" readonly="true" t:value="countValue"></input></td>
+                            <p:else>
+                                <td><input class="count" t:id="count" t:type="TextField" t:value="countValue"
+                                           onkeyup="changePrice()"/></td>
+                            </p:else>
+                        </t:if>
+                        <td>
+                            <t:outputraw value="${getUnitsModel()}"/>
                         </td>
-                    </t:if>
-                </tr>
-                </tbody>
-            </table>
-            <t:if test="${isShowMode()}">
-                <t:submit submit="false" t:id="edit" value="Редактировать"/>
-                <p:else>
-                    <t:if test="${isSipmentMode()}">
-                        <t:submit submit="false" t:id="editSH" value="Редактировать"/>
-                        <t:submit submit="false" t:id="shipment" value="Списать" hint="Если не указать дату отгрузки будет использована текущая дата"/>
+                        <td><input class="price" t:id="priceSource" readonly="literal:true" t:type="TextField"
+                                   t:value="priceSourceValue"/></td>
+                        <td><input class="pricehiden" t:id="priceList" type="hidden" readonly="literal:true"
+                                   t:type="TextField" t:value="priceFromList"/></td>
+                        <td>
+                            <t:if test="${!isShow()}">
+                                <t:submit t:id="remove" t:context="index" value="-"/>
+                            </t:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <t:if test="${!isShow()}">
+                            <td></td>
+                            <td>
+                                <t:submit submit="true" t:id="add" value="+"/>
+                            </td>
+                            <td></td>
+                            <td>
+
+                            </td>
+                        </t:if>
+                    </tr>
+                    </tbody>
+                </table>
+                <hr/>
+                <div class="button">
+                    <t:if test="${isShowMode()}">
+                        <t:submit submit="false" t:id="edit" value="Редактировать"/>
                         <p:else>
-                            <input t:type="submit" value="Обновить"/>
-                            <t:submit submit="true" t:id="saveAsTemplate" value="Сохранить как шаблон"/>
+                            <t:if test="${isSipmentMode()}">
+
+                                <t:submit submit="false" t:id="shipment" value="Списать"
+                                          title="Если не указать дату отгрузки будет использована текущая дата"/>
+                                <div class="padding-left">
+                                    <t:submit submit="false" t:id="editSH" value="Редактировать"/>
+                                </div>
+                                <p:else>
+                                    <input t:type="submit" value="Обновить"/>
+
+                                    <div class="padding-left">
+                                        <t:submit submit="true" t:id="saveAsTemplate" value="Сохранить как шаблон"/>
+                                    </div>
+                                </p:else>
+                            </t:if>
                         </p:else>
                     </t:if>
-                </p:else>
-            </t:if>
-
-        </form>
-    </t:zone>
+                </div>
+            </form>
+        </t:zone>
+    </div>
 </div>
 </html>

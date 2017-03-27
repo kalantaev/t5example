@@ -4,21 +4,25 @@ import com.example.t5.entities.BuyerEntity;
 import com.example.t5.entities.ProviderEntity;
 import com.example.t5.pages.list.BuyerList;
 import com.example.t5.pages.list.SourceList;
-import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.PersistenceConstants;
+import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Session;
 
+import java.util.List;
+
 /**
  * Created by Калантаев Александр on 04.03.2017.
  */
+@Import(stylesheet = "context:style/createform.css")
 public class CreateBuyer {
     @InjectComponent("createBuyer")
     private Form form;
-
+    @Persist(PersistenceConstants.FLASH)
+    @Property
+    private List<String> errors;
     @InjectPage
     private BuyerList buyerList;
 
@@ -30,6 +34,8 @@ public class CreateBuyer {
 
     @Property
     private String nameHead;
+    @Property
+    private String email;
     @Property
     private String inn;
 
@@ -73,6 +79,7 @@ public class CreateBuyer {
         buyerEntity.setPhone(phone);
         buyerEntity.setPhoneMobail(phoneMobail);
         buyerEntity.setDeleted(false);
+        buyerEntity.setEmail(email);
         session.save(buyerEntity);
         return buyerList;
     }

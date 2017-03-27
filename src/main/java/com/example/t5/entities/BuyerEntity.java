@@ -20,7 +20,16 @@ public class BuyerEntity {
     private String phone;
     private String phoneMobail;
     private String adress;
+    private String email;
+    @Basic
+    @Column(name = "EMAIL")
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

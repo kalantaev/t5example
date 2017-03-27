@@ -1,10 +1,7 @@
 package com.example.t5.pages.edit;
 
 import com.example.t5.data.Units;
-import com.example.t5.entities.BuyerEntity;
-import com.example.t5.entities.ProductEntity;
-import com.example.t5.entities.SourceEntity;
-import com.example.t5.entities.SourceInProductEntity;
+import com.example.t5.entities.*;
 import com.example.t5.pages.BasicPanel;
 import com.example.t5.pages.product.ProductList;
 import org.apache.tapestry5.PersistenceConstants;
@@ -28,7 +25,8 @@ import java.util.Locale;
 /**
  * Created by Калантаев Александр on 20.03.2017.
  */
-@Import(library = {"context:js/price.js"})
+@Import(library = {"context:js/price.js"},
+        stylesheet = "context:style/createform.css")
 public class EditProduct extends BasicPanel {
 
     @InjectComponent("createProduct")
@@ -275,13 +273,28 @@ public class EditProduct extends BasicPanel {
         }
     }
 
-    private boolean validateAndSave() {
+    private boolean validateAndSave(boolean template) {
         errors = new ArrayList<String>();
         if (name == null) {
             errors.add("Поле наименование должно быть заполнено");
         }
         if (listTest.isEmpty()) {
             errors.add("Не выбрано ни одно сырье");
+        }
+        if (!template) {
+            for (int i = 0; i < listTest.size(); i++) {
+                try {
+                    Double allResidue = (Double) session.createQuery("select sum(residue) from SourceSorageEntity " +
+                            "where deleted != true and source.id = :source").setParameter("source", listTest.get(i)).list().get(0);
+                    if (allResidue < countList.get(i)) {
+                        errors.add("Невозможно обновить данную продукцию. Недостаточно сырья \""
+                                + ((SourceEntity) session.get(SourceEntity.class, listTest.get(i))).getName() + "\" на складе.");
+                    }
+                } catch (Exception e) {
+                    errors.add("Невозможно обновить данную продукцию. Недостаточно сырья \""
+                            + ((SourceEntity) session.get(SourceEntity.class, listTest.get(i))).getName() + "\" на складе.");
+                }
+            }
         }
         return errors.isEmpty();
     }
@@ -292,7 +305,7 @@ public class EditProduct extends BasicPanel {
 
     @CommitAfter
     Object onSuccessFromCreateProduct() {
-        if (!validateAndSave()) return this;
+        if (!validateAndSave(false)) return this;
         if(dateShipment == null) {
             errors = new ArrayList<String>();
             errors.add("Данная продукция уже отгружена, по этому дата отгрузки обязательно должна быть указана");
@@ -307,7 +320,7 @@ public class EditProduct extends BasicPanel {
 
     @CommitAfter
     Object onSelectedFromSaveAsTemplate() {
-        if (!validateAndSave()) return this;
+        if (!validateAndSave(true)) return this;
         ProductEntity productEntity = createEntity(true);
         session.save(productEntity);
         clearPanel();
@@ -376,10 +389,6 @@ public class EditProduct extends BasicPanel {
         productEntity.setDeleted(false);
         productEntity.setDeteCreate(dateCreate);
         productEntity.setDateShipment(dateShipment);
-        //считаем общую сумму
-        for (BigDecimal p : priceSourceList) {
-            productPrice = productPrice.add(p);
-        }
         //устанавливаем общую сумму
         productEntity.setPrice(productPrice);
         if (buyerId != null) {
@@ -387,9 +396,43 @@ public class EditProduct extends BasicPanel {
             productEntity.setBuyerEntity(be);
         }
         for (SourceInProductEntity sipe : productEntity.getSourceList()){
+            List<SourceSorageEntity> list = session.createQuery("from SourceSorageEntity S where deleted != true and" +
+                    " S.count != S.residue and source = :source").setParameter("source", sipe.getSource()).list();
+            Double count = sipe.getCount();
+            for (int i = list.size()-1; i>= 0; i--){
+                SourceSorageEntity sse = list.get(i);
+                Double difference = sse.getCount()-sse.getResidue();
+                if(count<=difference){
+                    sse.setResidue(sse.getResidue() + count);
+                    session.update(sse);
+                    break;
+                } else {
+                    count = count - difference;
+                    sse.setResidue(sse.getCount());
+                    session.update(sse);
+                }
+            }
             sipe.setDeleted(true);
             session.update(sipe);
         }
+
+            for (int i = 0; i < listTest.size(); i++) {
+                List<SourceSorageEntity> list = session.createQuery("from SourceSorageEntity S where residue > 0 " +
+                        "and deleted != true and source.id = :entId").setParameter("entId", listTest.get(i)).list();
+                Double needUpd = countList.get(i);
+                for (SourceSorageEntity ent : list) {
+                    if (ent.getResidue() >= needUpd) {
+                        ent.setResidue(ent.getResidue() - needUpd);
+                        session.update(ent);
+                        break;
+                    } else {
+                        needUpd = needUpd - ent.getResidue();
+                        ent.setResidue(0d);
+                        session.update(ent);
+                    }
+                }
+            }
+
         List<SourceInProductEntity> sourseList = new ArrayList<SourceInProductEntity>();
         for (int i = 0; i < listTest.size(); i++) {
             SourceInProductEntity sourceInProductEntity = new SourceInProductEntity();

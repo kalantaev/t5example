@@ -1,9 +1,6 @@
 package com.example.t5.pages.product;
 
-import com.example.t5.entities.ProductEntity;
-import com.example.t5.entities.ProviderEntity;
-import com.example.t5.entities.Setting;
-import com.example.t5.entities.SourceInProductEntity;
+import com.example.t5.entities.*;
 import com.example.t5.excel.importexcel.ExcelWorker;
 import com.example.t5.pages.BasicPanel;
 import org.apache.tapestry5.PersistenceConstants;
@@ -49,17 +46,28 @@ public class ProductList  extends BasicPanel {
     void onActionFromRemove(Long id) {
         ProductEntity entity = (ProductEntity) session.get(ProductEntity.class, id);
         for (SourceInProductEntity sipe : entity.getSourceList()){
+            List<SourceSorageEntity> list = session.createQuery("from SourceSorageEntity S where deleted != true and" +
+                    " S.count != S.residue and source = :source").setParameter("source", sipe.getSource()).list();
+            Double count = sipe.getCount();
+            for (int i = list.size()-1; i>= 0; i--){
+                SourceSorageEntity sse = list.get(i);
+                Double difference = sse.getCount()-sse.getResidue();
+                if(count<=difference){
+                    sse.setResidue(sse.getResidue() + count);
+                    session.update(sse);
+                    break;
+                } else {
+                    count = count - difference;
+                    sse.setResidue(sse.getCount());
+                    session.update(sse);
+                }
+            }
             sipe.setDeleted(true);
             session.update(sipe);
         }
         entity.setDeleted(true);
         session.update(entity);
     }
-
-//    void onActionFromСre(Long id) {
-//        System.out.println(id);
-//        ExcelWorker.createXLS((ProductEntity) session.get(ProductEntity.class, id));
-//    }
 
     public String getDeteCreate(){
         return getStringFromData(product.getDeteCreate());
